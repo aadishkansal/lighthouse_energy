@@ -127,8 +127,8 @@ export const housingSchema = baseConsultationSchema.extend({
   ]),
   agmApproval: z.enum([
     "We already have AGM approval",
-    "We don't have AGM approval",
-    "We want help with AGM",
+    "We don't have an AGM approval yet",
+    "We want help in preparing for our AGM", 
   ]),
 });
 

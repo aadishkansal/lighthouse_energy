@@ -8,7 +8,11 @@ const Products = () => {
   const [activeTab, setActiveTab] = useState("residential");
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState({
+    residential: false,
+    housing: false,
+    commercial: false,
+  });
 
   const [formData, setFormData] = useState({
     residential: {
@@ -19,7 +23,7 @@ const Products = () => {
       monthlyBill: "",
       agreeToTerms: false,
     },
-    housingSociety: {
+    housing: {
       fullName: "",
       housingSocietyName: "",
       city: "",
@@ -40,6 +44,12 @@ const Products = () => {
       agreeToTerms: false,
     },
   });
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    // Clear errors when switching tabs
+    setErrors({});
+  };
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({
@@ -91,7 +101,7 @@ const Products = () => {
     if (activeTab === "commercial" && !currentForm.companyName.trim()) {
       newErrors.companyName = "Company name is required";
     }
-    if (activeTab === "housingSociety") {
+    if (activeTab === "housing") {
       if (!currentForm.housingSocietyName.trim()) {
         newErrors.housingSocietyName = "Housing society name is required";
       }
@@ -107,66 +117,90 @@ const Products = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!validateForm()) {
+    if (!validateForm() || isSubmitting) {
       return;
     }
 
     setIsSubmitting(true);
-    setSubmitSuccess(false);
+    setSubmitSuccess({
+      residential: false,
+      housing: false,
+      commercial: false,
+    });
+    setErrors({});
 
-    try {
-      // Simulate API call - replace with actual API endpoint
-      console.log("Form submitted:", formData[activeTab]);
+    const payload = {
+      formType: activeTab,
+      ...formData[activeTab],
+    };
 
-      // Simulate async operation
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log("Sending payload:", payload);
 
-      setSubmitSuccess(true);
+    fetch("http://localhost:3000/api/consultation/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(errorText);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("Submission successful:", data);
+        setSubmitSuccess((prev) => ({
+          ...prev,
+          [activeTab]: true,
+        }));
 
-      // Reset form after successful submission
-      setFormData((prev) => ({
-        ...prev,
-        [activeTab]:
-          activeTab === "residential"
-            ? {
-                fullName: "",
-                whatsappNumber: "",
-                city: "",
-                pincode: "",
-                monthlyBill: "",
-                agreeToTerms: false,
-              }
-            : activeTab === "commercial"
+        // Reset form after successful submission
+        setFormData((prev) => ({
+          ...prev,
+          [activeTab]:
+            activeTab === "residential"
               ? {
                   fullName: "",
-                  companyName: "",
+                  whatsappNumber: "",
                   city: "",
                   pincode: "",
-                  whatsappNumber: "",
                   monthlyBill: "",
                   agreeToTerms: false,
                 }
-              : {
-                  fullName: "",
-                  housingSocietyName: "",
-                  city: "",
-                  pincode: "",
-                  whatsappNumber: "",
-                  monthlyBill: "",
-                  designation: "",
-                  agmApproval: "",
-                  agreeToTerms: false,
-                },
-      }));
-    } catch (error) {
-      console.error("Form submission error:", error);
-      setErrors({ submit: "Something went wrong. Please try again." });
-    } finally {
-      setIsSubmitting(false);
-    }
+              : activeTab === "commercial"
+                ? {
+                    fullName: "",
+                    companyName: "",
+                    city: "",
+                    pincode: "",
+                    whatsappNumber: "",
+                    monthlyBill: "",
+                    agreeToTerms: false,
+                  }
+                : {
+                    fullName: "",
+                    housingSocietyName: "",
+                    city: "",
+                    pincode: "",
+                    whatsappNumber: "",
+                    monthlyBill: "",
+                    designation: "",
+                    agmApproval: "",
+                    agreeToTerms: false,
+                  },
+        }));
+      })
+      .catch((err) => {
+        console.error("Submission error:", err);
+        setErrors({ submit: "Something went wrong. Please try again." });
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   const monthlyBillOptions = [
@@ -189,6 +223,7 @@ const Products = () => {
     "We don't have an AGM approval yet",
     "We want help in preparing for our AGM",
   ];
+
 
   const renderResidential = () => (
     <section className="space-y-6">
@@ -349,14 +384,14 @@ const Products = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+              className="mt-4 bg-white text-black rounded-full py-3 px-12 font-semibold hover:bg-black hover:text-white transition text-base disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "Submitting..." : "Get Quote"}
+              {isSubmitting ? "Submitting..." : "Submit Details"}
             </button>
           </div>
 
           {/* Success Message */}
-          {submitSuccess && (
+          {submitSuccess[activeTab] && (
             <div className="bg-green-600 text-white p-3 rounded-lg text-center">
               Thank you! We'll contact you soon with your solar quote.
             </div>
@@ -619,14 +654,14 @@ const Products = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+              className="mt-4 bg-white text-black rounded-full py-3 px-12 font-semibold hover:bg-black hover:text-white transition text-base disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "Submitting..." : "Get Quote"}
+              {isSubmitting ? "Submitting..." : "Submit Details"}
             </button>
           </div>
 
           {/* Success Message */}
-          {submitSuccess && (
+          {submitSuccess[activeTab] && (
             <div className="bg-green-600 text-white p-3 rounded-lg text-center">
               Thank you! We'll contact you soon with your commercial solar
               quote.
@@ -647,7 +682,7 @@ const Products = () => {
 
       <div className="flex justify-center items-center">
         <img src="/comBen.svg"></img>
-      </div> 
+      </div>
 
       <div>
         <h1 className="font-extrabold text-2xl text-center">Why choose us?</h1>
@@ -742,7 +777,7 @@ const Products = () => {
               </label>
               <input
                 type="text"
-                value={formData.housingSociety.fullName}
+                value={formData.housing.fullName}
                 onChange={(e) => handleInputChange("fullName", e.target.value)}
                 className={`w-full bg-transparent border rounded-md px-4 py-2 placeholder-white/70 outline-none focus:border-white ${
                   errors.fullName ? "border-red-400" : "border-white/40"
@@ -760,7 +795,7 @@ const Products = () => {
               </label>
               <input
                 type="text"
-                value={formData.housingSociety.housingSocietyName}
+                value={formData.housing.housingSocietyName}
                 onChange={(e) =>
                   handleInputChange("housingSocietyName", e.target.value)
                 }
@@ -785,7 +820,7 @@ const Products = () => {
                 </label>
                 <input
                   type="text"
-                  value={formData.housingSociety.city}
+                  value={formData.housing.city}
                   onChange={(e) => handleInputChange("city", e.target.value)}
                   className={`w-full bg-transparent border rounded-md px-4 py-2 placeholder-white/70 outline-none focus:border-white ${
                     errors.city ? "border-red-400" : "border-white/40"
@@ -801,7 +836,7 @@ const Products = () => {
                 <label className="block mb-1">Pin code</label>
                 <input
                   type="text"
-                  value={formData.housingSociety.pincode}
+                  value={formData.housing.pincode}
                   onChange={(e) => handleInputChange("pincode", e.target.value)}
                   className="w-full bg-transparent border border-white/40 rounded-md px-4 py-2 placeholder-white/70 outline-none focus:border-white"
                   placeholder="Enter pincode"
@@ -816,7 +851,7 @@ const Products = () => {
                 </label>
                 <input
                   type="text"
-                  value={formData.housingSociety.whatsappNumber}
+                  value={formData.housing.whatsappNumber}
                   onChange={(e) =>
                     handleInputChange("whatsappNumber", e.target.value)
                   }
@@ -838,7 +873,7 @@ const Products = () => {
                   <span className="text-red-400">*</span>
                 </label>
                 <select
-                  value={formData.housingSociety.monthlyBill}
+                  value={formData.housing.monthlyBill}
                   onChange={(e) =>
                     handleInputChange("monthlyBill", e.target.value)
                   }
@@ -879,7 +914,7 @@ const Products = () => {
                     key={i}
                     onClick={() => handleInputChange("designation", option)}
                     className={`border rounded-full px-3 py-1 text-xs transition ${
-                      formData.housingSociety.designation === option
+                      formData.housing.designation === option
                         ? "bg-white text-black border-white"
                         : "text-white border-white/40 hover:bg-white hover:text-black"
                     }`}
@@ -900,7 +935,7 @@ const Products = () => {
                 AGM approval status <span className="text-red-400">*</span>
               </label>
               <select
-                value={formData.housingSociety.agmApproval}
+                value={formData.housing.agmApproval}
                 onChange={(e) =>
                   handleInputChange("agmApproval", e.target.value)
                 }
@@ -958,14 +993,14 @@ const Products = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+              className="mt-4 bg-white text-black rounded-full py-3 px-12 font-semibold hover:bg-black hover:text-white transition text-base disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "Submitting..." : "Get Quote"}
+              {isSubmitting ? "Submitting..." : "Submit Details"}
             </button>
           </div>
 
           {/* Success Message */}
-          {submitSuccess && (
+          {submitSuccess[activeTab] && (
             <div className="bg-green-600 text-white p-3 rounded-lg text-center">
               Thank you! We'll contact you soon with your housing society solar
               quote.
@@ -1066,7 +1101,7 @@ const Products = () => {
               ? "bg-black text-white"
               : "bg-white text-black"
           }`}
-          onClick={() => setActiveTab("residential")}
+          onClick={() => handleTabChange("residential")}
         >
           <HouseIcon />
           Residential
@@ -1074,11 +1109,11 @@ const Products = () => {
 
         <button
           className={`p-2 px-4 rounded-full flex gap-1 hover:text-white hover:bg-blue-900  ${
-            activeTab === "housingSociety"
+            activeTab === "housing"
               ? "bg-black text-white"
               : "bg-white text-black"
           }`}
-          onClick={() => setActiveTab("housingSociety")}
+          onClick={() => handleTabChange("housing")}
         >
           <BuildingIcon />
           Housing Society
@@ -1089,7 +1124,7 @@ const Products = () => {
               ? "bg-black text-white"
               : "bg-white text-black"
           }`}
-          onClick={() => setActiveTab("commercial")}
+          onClick={() => handleTabChange("commercial")}
         >
           <FactoryIcon />
           Commercial
@@ -1100,7 +1135,7 @@ const Products = () => {
       <div className="flex-1 w-full max-w-4xl px-4">
         {activeTab === "residential" && renderResidential()}
         {activeTab === "commercial" && renderCommercial()}
-        {activeTab === "housingSociety" && renderHousingSociety()}
+        {activeTab === "housing" && renderHousingSociety()}
       </div>
     </section>
   );

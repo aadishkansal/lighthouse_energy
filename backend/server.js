@@ -4,8 +4,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/database.js";
 import { z, ZodError } from "zod";
-import solarCalculatorRoutes from "./routes/solarCalculator.js";
-import consultationFormRoutes from "./routes/consultationForm.js";
 
 dotenv.config();
 const app = express();
@@ -14,11 +12,13 @@ const PORT = process.env.PORT || 5000;
 // Connect to MongoDB
 connectDB();
 
-// CORS
+// CORS - Simple configuration first
 app.use(
   cors({
     origin:
-      process.env.NODE_ENV === "production" ? process.env.FRONTEND_URL : true,
+      process.env.NODE_ENV === "production"
+        ? process.env.FRONTEND_URL
+        : "http://localhost:5173",
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -34,7 +34,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
 // Development logger
 if (process.env.NODE_ENV === "development") {
   app.use((req, res, next) => {
@@ -43,10 +42,55 @@ if (process.env.NODE_ENV === "development") {
   });
 }
 
-// Routes
-app.use("/api/solar-calculator", solarCalculatorRoutes);
-app.use("/api/consultation", consultationFormRoutes);
+// Import routes with try-catch to identify which file has the issue
+console.log("📁 Loading route files...");
 
+let solarCalculatorRoutes;
+let consultationFormRoutes;
+
+try {
+  console.log("  Loading solar calculator routes...");
+  solarCalculatorRoutes = (await import("./routes/solarCalculator.js")).default;
+  console.log("  ✅ Solar calculator routes loaded successfully");
+} catch (error) {
+  console.error("  ❌ Error loading solar calculator routes:", error.message);
+  console.error("     Full error:", error);
+}
+
+try {
+  console.log("  Loading consultation form routes...");
+  consultationFormRoutes = (await import("./routes/consultationForm.js"))
+    .default;
+  console.log("  ✅ Consultation form routes loaded successfully");
+} catch (error) {
+  console.error("  ❌ Error loading consultation form routes:", error.message);
+  console.error("     Full error:", error);
+}
+
+// Routes - only add if successfully loaded
+if (solarCalculatorRoutes) {
+  try {
+    app.use("/api/solar-calculator", solarCalculatorRoutes);
+    console.log("✅ Solar calculator routes registered");
+  } catch (error) {
+    console.error(
+      "❌ Error registering solar calculator routes:",
+      error.message
+    );
+  }
+}
+
+if (consultationFormRoutes) {
+  try {
+    app.use("/api/consultation", consultationFormRoutes);
+    console.log("✅ Consultation form routes registered");
+  } catch (error) {
+    console.error(
+      "❌ Error registering consultation form routes:",
+      error.message
+    );
+  }
+}
 
 // Health check
 app.get("/api/health", (req, res) => {

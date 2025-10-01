@@ -11,13 +11,13 @@ const SolarConsultationForm = () => {
       monthlyBill: "",
       agreeToTerms: false,
     },
-    housingSociety: {
+    housing: {
       fullName: "",
       housingSocietyName: "",
       city: "",
       pincode: "",
       whatsappNumber: "",
-      monthlyBill: "",
+      monthlyBill: "0-50000",
       designation: "",
       agmApproval: "",
       agreeToTerms: false,
@@ -47,11 +47,76 @@ const SolarConsultationForm = () => {
     handleInputChange("monthlyBill", bill);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData[activeTab]);
-    // Handle form submission here
+const [isSubmitting, setIsSubmitting] = useState(false);
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+
+  // Prevent double submission
+  if (isSubmitting) return;
+  setIsSubmitting(true);
+
+  const payload = {
+    formType: activeTab,
+    ...formData[activeTab],
   };
+
+  console.log("Sending payload:", payload);
+
+  fetch("http://localhost:3000/api/consultation/submit", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  })
+    .then(async (res) => {
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(errorText);
+      }
+      return res.json();
+    })
+    .then((data) => {
+      console.log("Submission successful:", data);
+      // Reset form after successful submission
+      setFormData({
+        residential: {
+          fullName: "",
+          whatsappNumber: "",
+          city: "",
+          pincode: "",
+          monthlyBill: "",
+          agreeToTerms: false,
+        },
+        housing: {
+          fullName: "",
+          housingSocietyName: "",
+          city: "",
+          pincode: "",
+          whatsappNumber: "",
+          monthlyBill: "0-50000",
+          designation: "",
+          agmApproval: "",
+          agreeToTerms: false,
+        },
+        commercial: {
+          fullName: "",
+          companyName: "",
+          city: "",
+          pincode: "",
+          whatsappNumber: "",
+          monthlyBill: "",
+          agreeToTerms: false,
+        },
+      });
+    })
+    .catch((err) => {
+      console.error("Submission error:", err);
+    })
+    .finally(() => {
+      setIsSubmitting(false);
+    });
+};
+
 
   const monthlyBillOptions = [
     "Less than ₹1500",
@@ -68,11 +133,11 @@ const SolarConsultationForm = () => {
     "Facility Manager",
   ];
 
-  const agmApprovalOptions = [
-    "We already have AGM approval",
-    "We don't have an AGM approval yet",
-    "We want help in preparing for our AGM",
-  ];
+const agmApprovalOptions = [
+  "We already have AGM approval",
+  "We don't have an AGM approval yet", // ← Keep this
+  "We want help in preparing for our AGM", // ← Keep this
+];
 
   const renderResidentialForm = () => (
     <>
@@ -90,9 +155,9 @@ const SolarConsultationForm = () => {
       </div>
 
       <div>
-        <label className="block mb-1">
-          WhatsApp Number <span className="text-red-400">*</span>
-        </label>
+            <label className="block mb-1">
+              WhatsApp Number <span className="text-red-400">*</span>
+            </label>
         <input
           type="text"
           value={formData.residential.whatsappNumber}
@@ -161,7 +226,7 @@ const SolarConsultationForm = () => {
         </label>
         <input
           type="text"
-          value={formData.housingSociety.fullName}
+          value={formData.housing.fullName}
           onChange={(e) => handleInputChange("fullName", e.target.value)}
           className="w-full bg-transparent border border-white/40 rounded-md px-4 py-2 placeholder-white/70 outline-none focus:border-white"
           placeholder="Enter your name"
@@ -174,7 +239,7 @@ const SolarConsultationForm = () => {
         </label>
         <input
           type="text"
-          value={formData.housingSociety.housingSocietyName}
+          value={formData.housing.housingSocietyName}
           onChange={(e) =>
             handleInputChange("housingSocietyName", e.target.value)
           }
@@ -190,7 +255,7 @@ const SolarConsultationForm = () => {
           </label>
           <input
             type="text"
-            value={formData.housingSociety.city}
+            value={formData.housing.city}
             onChange={(e) => handleInputChange("city", e.target.value)}
             className="w-full bg-transparent border border-white/40 rounded-md px-4 py-2 placeholder-white/70 outline-none focus:border-white"
             placeholder="Enter city"
@@ -201,7 +266,7 @@ const SolarConsultationForm = () => {
           <label className="block mb-1">Pin code</label>
           <input
             type="text"
-            value={formData.housingSociety.pincode}
+            value={formData.housing.pincode}
             onChange={(e) => handleInputChange("pincode", e.target.value)}
             className="w-full bg-transparent border border-white/40 rounded-md px-4 py-2 placeholder-white/70 outline-none focus:border-white"
             placeholder="Enter pincode"
@@ -216,7 +281,7 @@ const SolarConsultationForm = () => {
           </label>
           <input
             type="text"
-            value={formData.housingSociety.whatsappNumber}
+            value={formData.housing.whatsappNumber}
             onChange={(e) =>
               handleInputChange("whatsappNumber", e.target.value)
             }
@@ -230,7 +295,7 @@ const SolarConsultationForm = () => {
             Monthly Electricity Bill <span className="text-red-400">*</span>
           </label>
           <select
-            value={formData.housingSociety.monthlyBill}
+            value={formData.housing.monthlyBill}
             onChange={(e) => handleInputChange("monthlyBill", e.target.value)}
             className="w-full bg-transparent border border-white/40 rounded-md px-4 py-2 text-white outline-none focus:border-white"
           >
@@ -259,7 +324,7 @@ const SolarConsultationForm = () => {
               key={i}
               onClick={() => handleInputChange("designation", option)}
               className={`border rounded-full px-3 py-1 text-xs transition ${
-                formData.housingSociety.designation === option
+                formData.housing.designation === option
                   ? "bg-white text-black border-white"
                   : "text-white border-white/40 hover:bg-white hover:text-black"
               }`}
@@ -275,7 +340,7 @@ const SolarConsultationForm = () => {
           AGM approval status <span className="text-red-400">*</span>
         </label>
         <select
-          value={formData.housingSociety.agmApproval}
+          value={formData.housing.agmApproval}
           onChange={(e) => handleInputChange("agmApproval", e.target.value)}
           className="w-full bg-transparent border border-white/40 rounded-md px-4 py-2 text-white outline-none focus:border-white"
         >
@@ -421,9 +486,9 @@ const SolarConsultationForm = () => {
           Residential
         </button>
         <button
-          onClick={() => setActiveTab("housingSociety")}
+          onClick={() => setActiveTab("housing")}
           className={`px-4 py-2 rounded-full transition font-medium text-sm ${
-            activeTab === "housingSociety"
+            activeTab === "housing"
               ? "bg-white text-black"
               : "hover:bg-white/10"
           }`}
@@ -448,7 +513,7 @@ const SolarConsultationForm = () => {
         className="flex flex-col gap-4 text-white text-sm overflow-y-auto max-h-96 custom-scrollbar"
       >
         {activeTab === "residential" && renderResidentialForm()}
-        {activeTab === "housingSociety" && renderHousingSocietyForm()}
+        {activeTab === "housing" && renderHousingSocietyForm()}
         {activeTab === "commercial" && renderCommercialForm()}
 
         <div className="flex items-start mt-4">
@@ -478,9 +543,10 @@ const SolarConsultationForm = () => {
 
         <button
           type="submit"
-          className="mt-4 bg-white text-black rounded-full py-3 font-semibold hover:bg-black hover:text-white transition text-base"
+          disabled={isSubmitting}
+          className="mt-4 bg-white text-black rounded-full py-3 font-semibold hover:bg-black hover:text-white transition text-base disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Submit Details
+          {isSubmitting ? "Submitting..." : "Submit Details"}
         </button>
       </form>
     </>
