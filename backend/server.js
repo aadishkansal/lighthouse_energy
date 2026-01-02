@@ -92,6 +92,16 @@ if (consultationFormRoutes) {
   }
 }
 
+
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Lighthouse Energy API is running successfully 🚀",
+    timestamp: new Date().toISOString(),
+    documentation: "/api/docs",
+  });
+});
+
 // Health check
 app.get("/api/health", (req, res) => {
   console.log("🏥 Health check endpoint hit");
@@ -127,6 +137,7 @@ app.get("/api/docs", (req, res) => {
         "DELETE /api/consultation/submissions/:id": "Delete submission (admin)",
       },
       general: {
+        "GET /": "Root check",
         "GET /api/health": "API health check",
         "GET /api/docs": "API documentation",
       },
@@ -173,6 +184,7 @@ app.use((req, res) => {
     success: false,
     message: `Route ${req.method} ${req.path} not found`,
     availableRoutes: [
+      "GET /",
       "GET /api/health",
       "GET /api/docs",
       "POST /api/solar-calculator/calculate",
