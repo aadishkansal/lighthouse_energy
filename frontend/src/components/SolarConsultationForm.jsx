@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 const SolarConsultationForm = () => {
+  // ... (Your existing state and handleInputChange logic remains exactly the same) ...
   const [activeTab, setActiveTab] = useState("residential");
   const [formData, setFormData] = useState({
     residential: {
@@ -47,76 +48,86 @@ const SolarConsultationForm = () => {
     handleInputChange("monthlyBill", bill);
   };
 
-const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-const handleSubmit = (e) => {
-  e.preventDefault();
+  // ---------------------------------------------------------
+  // UPDATED HANDLE SUBMIT
+  // ---------------------------------------------------------
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  // Prevent double submission
-  if (isSubmitting) return;
-  setIsSubmitting(true);
+    if (isSubmitting) return;
+    setIsSubmitting(true);
 
-  const payload = {
-    formType: activeTab,
-    ...formData[activeTab],
+    const payload = {
+      formType: activeTab,
+      ...formData[activeTab],
+    };
+
+    console.log("Sending payload:", payload);
+
+    // 1. Get the API URL from environment variables
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+    // 2. Use the variable instead of hardcoded localhost
+    fetch(`${API_URL}/api/consultation/submit`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(errorText);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("Submission successful:", data);
+        alert("Consultation booked successfully!"); // Added user feedback
+
+        // Reset form
+        setFormData({
+          residential: {
+            fullName: "",
+            whatsappNumber: "",
+            city: "",
+            pincode: "",
+            monthlyBill: "",
+            agreeToTerms: false,
+          },
+          housing: {
+            fullName: "",
+            housingSocietyName: "",
+            city: "",
+            pincode: "",
+            whatsappNumber: "",
+            monthlyBill: "0-50000",
+            designation: "",
+            agmApproval: "",
+            agreeToTerms: false,
+          },
+          commercial: {
+            fullName: "",
+            companyName: "",
+            city: "",
+            pincode: "",
+            whatsappNumber: "",
+            monthlyBill: "",
+            agreeToTerms: false,
+          },
+        });
+      })
+      .catch((err) => {
+        console.error("Submission error:", err);
+        alert("Error submitting form. Please try again.");
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
-  console.log("Sending payload:", payload);
-
-  fetch("http://localhost:3000/api/consultation/submit", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  })
-    .then(async (res) => {
-      if (!res.ok) {
-        const errorText = await res.text();
-        throw new Error(errorText);
-      }
-      return res.json();
-    })
-    .then((data) => {
-      console.log("Submission successful:", data);
-      // Reset form after successful submission
-      setFormData({
-        residential: {
-          fullName: "",
-          whatsappNumber: "",
-          city: "",
-          pincode: "",
-          monthlyBill: "",
-          agreeToTerms: false,
-        },
-        housing: {
-          fullName: "",
-          housingSocietyName: "",
-          city: "",
-          pincode: "",
-          whatsappNumber: "",
-          monthlyBill: "0-50000",
-          designation: "",
-          agmApproval: "",
-          agreeToTerms: false,
-        },
-        commercial: {
-          fullName: "",
-          companyName: "",
-          city: "",
-          pincode: "",
-          whatsappNumber: "",
-          monthlyBill: "",
-          agreeToTerms: false,
-        },
-      });
-    })
-    .catch((err) => {
-      console.error("Submission error:", err);
-    })
-    .finally(() => {
-      setIsSubmitting(false);
-    });
-};
-
+  // ... (Rest of your render logic remains exactly the same) ...
 
   const monthlyBillOptions = [
     "Less than ₹1500",
@@ -133,11 +144,11 @@ const handleSubmit = (e) => {
     "Facility Manager",
   ];
 
-const agmApprovalOptions = [
-  "We already have AGM approval",
-  "We don't have an AGM approval yet", // ← Keep this
-  "We want help in preparing for our AGM", // ← Keep this
-];
+  const agmApprovalOptions = [
+    "We already have AGM approval",
+    "We don't have an AGM approval yet",
+    "We want help in preparing for our AGM",
+  ];
 
   const renderResidentialForm = () => (
     <>
@@ -155,9 +166,9 @@ const agmApprovalOptions = [
       </div>
 
       <div>
-            <label className="block mb-1">
-              WhatsApp Number <span className="text-red-400">*</span>
-            </label>
+        <label className="block mb-1">
+          WhatsApp Number <span className="text-red-400">*</span>
+        </label>
         <input
           type="text"
           value={formData.residential.whatsappNumber}

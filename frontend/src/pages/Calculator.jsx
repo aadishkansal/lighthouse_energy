@@ -1,10 +1,4 @@
-import {
-  IconCoinRupee,
-  IconCoinRupeeFilled,
-  IconMoneybag,
-  IconMoneybagPlus,
-  IconSolarPanel,
-} from "@tabler/icons-react";
+import { IconSolarPanel } from "@tabler/icons-react";
 import {
   BadgeIndianRupee,
   Calendar,
@@ -12,6 +6,9 @@ import {
   CalendarRange,
 } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
+
+// ✅ FIX: Define API_URL outside the component
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export default function Calculator({ calculationId }) {
   const [formData, setFormData] = useState({
@@ -28,7 +25,7 @@ export default function Calculator({ calculationId }) {
     calculationId || ""
   );
 
- const resultsRef = useRef(null);
+  const resultsRef = useRef(null);
 
   useEffect(() => {
     if (!calculationIdState) return;
@@ -36,7 +33,7 @@ export default function Calculator({ calculationId }) {
     async function loadCalculation() {
       try {
         const res = await fetch(
-          `/api/solar-calculator/calculation/${calculationIdState}`
+          `${API_URL}/api/solar-calculator/calculation/${calculationIdState}`
         );
         const json = await res.json();
         if (json.success) {
@@ -51,16 +48,17 @@ export default function Calculator({ calculationId }) {
       }
     }
     loadCalculation();
-  }, [calculationIdState]);
+  }, [calculationIdState]); // ✅ No dependency warning now because API_URL is external
 
-    useEffect(() => {
-      if (calculation && resultsRef.current) {
-        resultsRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
-    }, [calculation]);
+  useEffect(() => {
+    if (calculation && resultsRef.current) {
+      resultsRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [calculation]);
+
   useEffect(() => {
     console.log("Current calculation:", calculation);
   }, [calculation]);
@@ -124,7 +122,7 @@ export default function Calculator({ calculationId }) {
 
     async function submitCalculation() {
       try {
-        const res = await fetch("/api/solar-calculator/calculate", {
+        const res = await fetch(`${API_URL}/api/solar-calculator/calculate`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
@@ -168,7 +166,7 @@ export default function Calculator({ calculationId }) {
               </label>
               <select
                 name="state"
-                className="outline-gray-500 border border-gray-100 rounded-lg p-2  "
+                className="outline-gray-500 border border-gray-100 rounded-lg p-2 bg-black/50 text-white"
                 value={formData.state}
                 onChange={handleInputChange}
                 required
@@ -191,7 +189,7 @@ export default function Calculator({ calculationId }) {
                 type="number"
                 name="monthlyBill"
                 placeholder="₹ Average Monthly Bill"
-                className="outline-gray-500 border border-gray-100 rounded-lg p-1 px-2  text-center"
+                className="outline-gray-500 border border-gray-100 rounded-lg p-1 px-2 text-center bg-transparent"
                 value={formData.monthlyBill}
                 onChange={handleInputChange}
                 required
@@ -207,7 +205,7 @@ export default function Calculator({ calculationId }) {
                 type="number"
                 name="rooftopArea"
                 placeholder="Rooftop Area(approx : in sq.ft.)"
-                className="outline-gray-500 border border-gray-100 px-3 rounded-lg p-1 text-center"
+                className="outline-gray-500 border border-gray-100 px-3 rounded-lg p-1 text-center bg-transparent"
                 value={formData.rooftopArea}
                 onChange={handleInputChange}
                 required
@@ -223,7 +221,7 @@ export default function Calculator({ calculationId }) {
                 type="tel"
                 name="mobileNumber"
                 placeholder="Mobile Number"
-                className="outline-gray-500 border border-gray-100 px-3 rounded-lg p-1 text-center"
+                className="outline-gray-500 border border-gray-100 px-3 rounded-lg p-1 text-center bg-transparent"
                 value={formData.mobileNumber}
                 onChange={handleInputChange}
                 required
