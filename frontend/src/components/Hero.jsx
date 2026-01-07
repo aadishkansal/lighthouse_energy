@@ -4,36 +4,40 @@ import SolarConsultationForm from "./SolarConsultationForm";
 const Hero = () => {
   return (
     <section>
-      {/* Desktop (≥1024px) */}
-      <div className="hidden lg:flex relative w-fit">
-        <img src="/solar.png" alt="" className="block" />
+  {/* Desktop (≥1024px) */}
+  {/* 1. Changed w-fit to w-full and added h-screen to force it to be exactly screen height */}
+  <div className="hidden lg:flex relative w-full h-screen overflow-hidden">
+    
+    {/* 2. Added w-full, h-full, and object-cover to make the image fill the background */}
+    <img 
+      src="/solar.png" 
+      alt="Solar Panel Background" 
+      className="absolute inset-0 w-full h-full object-cover block" 
+    />
 
-        {/* Text directly over image */}
-        <div className="absolute top-0 left-0 w-full h-full flex flex-col gap-32 justify-center text-left z-10 space-y-4 px-6">
-          <h2 className="font-black text-5xl text-white leading-tight">
-            Make Your <br />
-            Electricity Bill * <br />
-            Zero
-          </h2>
-          <div className="mb-5">
-            <h2 className="font-semibold text-2xl mb-2 text-white leading-tight">
-              Say Yes to Solar, Say Goodbye to High Bills.
-            </h2>
-            <h2 className="font-medium text-xl text-white/80 leading-tight">
-              Get benefit by government subsidy and save upto ₹78000*
-            </h2>
-          </div>
-        </div>
-
-        
-
-        {/* Desktop form */}
-        <div className="absolute w-[480px] h-auto max-h-[600px] top-0 right-0 mt-28 mr-24 rounded-3xl bg-black/20 backdrop-blur-md z-10 p-6 flex-col">
-          <SolarConsultationForm />
-        </div>
+    {/* Text directly over image */}
+    {/* Added relative z-10 to ensure text sits on top of the absolute image */}
+    <div className="relative z-10 w-full h-full flex flex-col gap-32 justify-center text-left px-6">
+      <h2 className="font-black text-5xl text-white leading-tight">
+        Make Your <br />
+        Electricity Bill * <br />
+        Zero
+      </h2>
+      <div className="mb-5">
+        <h2 className="font-semibold text-2xl mb-2 text-white leading-tight">
+          Say Yes to Solar, Say Goodbye to High Bills.
+        </h2>
+        <h2 className="font-medium text-xl text-white/80 leading-tight">
+          Get benefit by government subsidy and save upto ₹78000*
+        </h2>
       </div>
-      
+    </div>
 
+    {/* Desktop form */}
+    <div className="absolute w-[480px] h-auto max-h-[600px] top-0 right-0 mt-28 mr-24 rounded-3xl bg-black/20 backdrop-blur-md z-20 p-6 flex-col">
+      <SolarConsultationForm />
+    </div>
+  </div>
       {/* Mobile + Tablet (<1024px) */}
       <div className="lg:hidden">
         <img src="/solarcopy.png" alt="" className="block" />
