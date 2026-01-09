@@ -35,7 +35,7 @@ const SolarConsultationForm = () => {
 
   // --- NEW: FUNCTION TO FETCH CITY FROM PINCODE ---
   const fetchLocationFromPincode = async (pincode) => {
-    // 1. Get API URL (same as submit logic)
+    // 1. Get API URL (defaults to localhost if env not set)
     const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
     try {
@@ -57,7 +57,7 @@ const SolarConsultationForm = () => {
       }
     } catch (err) {
       console.error("Auto-location detection failed:", err);
-      // Optional: You can choose to leave the city empty so user types it manually
+      // We don't alert the user here, we just leave the city field for manual entry
     }
   };
 
@@ -72,7 +72,7 @@ const SolarConsultationForm = () => {
       },
     }));
 
-    // 2. Check if the field is pincode and has 6 digits
+    // 2. Check if the field is pincode and has 6 digits to trigger lookup
     if (field === "pincode" && value.length === 6) {
       fetchLocationFromPincode(value);
     }
@@ -215,7 +215,7 @@ const SolarConsultationForm = () => {
           </label>
           <input
             type="text"
-            maxLength={6} // Added max length for better UX
+            maxLength={6}
             value={formData.residential.pincode}
             onChange={(e) => handleInputChange("pincode", e.target.value)}
             className="w-full bg-transparent border border-white/40 rounded-md px-4 py-2 placeholder-white/70 outline-none focus:border-white"
