@@ -12,29 +12,28 @@ const PORT = process.env.PORT || 5000;
 // Connect to MongoDB
 connectDB();
 
-// CORS - Simple configuration first
-// ... existing imports
-
-// CORS Configuration
+// ----------------------------------------------------------------------
+// CORS CONFIGURATION (FIXED)
+// ----------------------------------------------------------------------
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
-  "https://lighthouse-energy.vercel.app",        // Main Production URL
-  "https://lighthouse-energy-ykgd.vercel.app",   // <--- ADD YOUR SPECIFIC PREVIEW URL HERE
+  "https://lighthouse-energy.vercel.app", // Main Production URL
+  "https://lighthouse-energy-ykgd.vercel.app", // Your specific preview URL
   process.env.FRONTEND_URL,
 ];
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (mobile apps, curl, etc.)
+      // 1. Allow requests with no origin (mobile apps, curl, postman)
       if (!origin) return callback(null, true);
 
-      // 1. Allow origins explicitly defined in the array
+      // 2. Allow origins explicitly defined in the array
       if (allowedOrigins.includes(origin)) return callback(null, true);
 
-      // 2. Allow ANY Vercel preview deployment (More robust check)
-      // Checks if the origin contains "vercel.app"
+      // 3. Allow ANY Vercel deployment (Dynamic check for all previews)
+      // This allows https://<project-name>-<hash>.vercel.app to work automatically
       if (origin.includes(".vercel.app")) return callback(null, true);
 
       // Block everything else
@@ -43,14 +42,28 @@ app.use(
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Requested-With",
+      "Accept",
+    ],
   })
 );
+
+// CRITICAL FIX: Handle Preflight (OPTIONS) requests for all routes
+// This resolves the "No 'Access-Control-Allow-Origin' header" error on pre-checks
+app.options("*", cors());
+
+// ----------------------------------------------------------------------
+// MIDDLEWARE
+// ----------------------------------------------------------------------
 
 // Body parsing
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
+// Global logging middleware
 app.use((req, res, next) => {
   console.log(`--> ${req.method} ${req.originalUrl} hit global middleware`);
   next();
@@ -64,7 +77,9 @@ if (process.env.NODE_ENV === "development") {
   });
 }
 
-// Import routes with try-catch to identify which file has the issue
+// ----------------------------------------------------------------------
+// DYNAMIC ROUTE LOADING
+// ----------------------------------------------------------------------
 console.log("📁 Loading route files...");
 
 let solarCalculatorRoutes;
@@ -89,7 +104,7 @@ try {
   console.error("     Full error:", error);
 }
 
-// Routes - only add if successfully loaded
+// Register Routes
 if (solarCalculatorRoutes) {
   try {
     app.use("/api/solar-calculator", solarCalculatorRoutes);
@@ -114,6 +129,9 @@ if (consultationFormRoutes) {
   }
 }
 
+// ----------------------------------------------------------------------
+// BASIC ROUTES
+// ----------------------------------------------------------------------
 
 app.get("/", (req, res) => {
   res.status(200).json({
@@ -150,6 +168,8 @@ app.get("/api/docs", (req, res) => {
           "Get specific calculation by ID",
       },
       consultation: {
+        "GET /api/consultation/lookup-pincode/:pincode":
+          "Get City/State from Pincode",
         "POST /api/consultation/submit": "Submit consultation form",
         "GET /api/consultation/submissions":
           "Get all consultation submissions (admin)",
@@ -166,6 +186,10 @@ app.get("/api/docs", (req, res) => {
     },
   });
 });
+
+// ----------------------------------------------------------------------
+// ERROR HANDLERS
+// ----------------------------------------------------------------------
 
 // Global error handler
 app.use((err, req, res, next) => {
