@@ -13,24 +13,29 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 
 // CORS - Simple configuration first
+// ... existing imports
+
+// CORS Configuration
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
+  "https://lighthouse-energy.vercel.app",        // Main Production URL
+  "https://lighthouse-energy-ykgd.vercel.app",   // <--- ADD YOUR SPECIFIC PREVIEW URL HERE
   process.env.FRONTEND_URL,
 ];
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps, curl, or Postman)
+      // Allow requests with no origin (mobile apps, curl, etc.)
       if (!origin) return callback(null, true);
 
       // 1. Allow origins explicitly defined in the array
       if (allowedOrigins.includes(origin)) return callback(null, true);
 
-      // 2. Allow ANY Vercel deployment (Dynamic check for previews)
-      // This is the magic line that fixes your current error
-      if (origin.endsWith(".vercel.app")) return callback(null, true);
+      // 2. Allow ANY Vercel preview deployment (More robust check)
+      // Checks if the origin contains "vercel.app"
+      if (origin.includes(".vercel.app")) return callback(null, true);
 
       // Block everything else
       console.log("Blocked by CORS:", origin);
