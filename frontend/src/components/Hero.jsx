@@ -17,7 +17,7 @@ const Hero = () => {
         {/* Text directly over image */}
         {/* Added relative z-10 to ensure text sits on top of the absolute image */}
         <div className="relative z-10 w-full h-full flex flex-col gap-32 justify-center text-left px-6">
-          <h2 className="font-black text-5xl text-white leading-tight">
+          <h2 className="font-black font-iceland text-7xl text-white leading-tight">
             Make Your <br />
             Electricity Bill * <br />
             Zero
@@ -39,14 +39,37 @@ const Hero = () => {
       </div>
       {/* Mobile + Tablet (<1024px) */}
       <div className="lg:hidden">
-        {/* Image takes full screen height and width */}
-        <img
-          src="/solarmb.png"
-          alt=""
-          className="h-screen w-full object-cover block"
-        />
+        {/* WRAPPER: Needs relative positioning and defined height */}
+        <div className="relative h-screen w-full">
+          {/* BACKGROUND IMAGE: absolute positioning to cover the parent wrapper */}
+          <img
+            src="/solarmb.png"
+            alt="Solar Background"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
 
-        {/* Form appears below the image (user scrolls down to see it) */}
+          {/* OPTIONAL: Dark Overlay to make text readable if image is bright */}
+          <div className="absolute inset-0 bg-black/30"></div>
+
+          {/* TEXT CONTENT: relative z-10 to sit ON TOP of the image */}
+          <div className="relative z-10 h-full flex flex-col gap-32 justify-center text-left px-6">
+            <h2 className="font-black font-iceland text-5xl mt-28 text-center text-white leading-tight">
+              Make Your <br />
+              Electricity Bill * <br />
+              Zero
+            </h2>
+            <div className="mb-5">
+              <h2 className="font-semibold  text-xl mb-2 text-white leading-tight">
+                Say Yes to Solar, Say Goodbye to High Bills.
+              </h2>
+              <h2 className="font-medium text-md text-white/80 leading-tight">
+                Get benefit by government subsidy and save upto ₹78000*
+              </h2>
+            </div>
+          </div>
+        </div>
+
+        {/* FORM: Appears below the h-screen fold */}
         <div className="p-4">
           <div className="w-full max-w-md bg-black/90 backdrop-blur-md rounded-3xl p-6 flex flex-col">
             <SolarConsultationForm />

@@ -35,7 +35,7 @@ const Aboutus = () => {
               alt="Team Member Photo"
               className="w-32 h-32 rounded-full object-cover shadow-md mb-4"
             />
-            <h3 className="text-lg font-semibold">Neeraj Jain</h3>
+            <h3 className="text-lg font-semibold ">Neeraj Jain</h3>
             <p className="text-gray-600 mt-1">Chief Technical Officer</p>
           </div>
 
