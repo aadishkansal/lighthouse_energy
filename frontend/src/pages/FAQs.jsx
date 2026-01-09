@@ -1,3 +1,7 @@
+"use client"; // Required for useState
+
+import { useState } from "react";
+import { Search } from "lucide-react"; // Assuming you are using lucide-react, or remove icon if not
 import {
   Accordion,
   AccordionContent,
@@ -9,154 +13,170 @@ const faqs = [
   {
     question: "Can I cancel at anytime?",
     answer:
-      "Yes, you can cancel anytime no questions are asked while you cancel but we would highly appreciate if you will give us some feedback.",
+      "Yes, you can cancel anytime without questions. We would appreciate your feedback.",
   },
   {
     question: "Why should I go solar?",
     answer:
-      "If your monthly electricity bill is above INR 2000 on average, you have physical access to your rooftop, and if you want to make money from the sun, it makes absolute sense for you to go solar.",
+      "It is highly recommended if your monthly bill exceeds ₹2000 and you have roof access. It saves money and generates clean energy.",
   },
   {
-    question: "What do I need to install a rooftop solar system?",
+    question: "What do I need to install a rooftop system?",
     answer:
-      "All you need to qualify for a solar system is - empty space on your roof and access to your rooftop. Just fill the project enquiry form on our website and our team will contact you to discuss your requirement. Once the project is finalised, we will take care of your entire plant design, installation and maintenance.",
+      "You only need empty roof space and access. Fill out our form, and we handle the design, installation, and maintenance.",
   },
   {
     question: "What is a solar rooftop system?",
     answer:
-      "Solar Rooftop System consists of solar panels that are mounted up on your roof/terrace, unlike traditional Solar Systems which required extra land for setup. This reduces costs and increases utilization of space on your roof/terrace.",
+      "It consists of panels mounted on your roof to generate power, saving land cost and utilizing unused terrace space.",
   },
   {
-    question: "How does a solar rooftop system work?",
+    question: "How does it work?",
     answer:
-      "Solar Panels work on the principle of photo-voltaic effect (PV effect). Basically, when light energy hits the solar panel surface, the solar cells start conducting electricity due to the photo-electric property of semiconductors like silicon that make up a solar cell.",
+      "Solar panels convert sunlight into electricity using the photovoltaic (PV) effect via semiconductor cells like silicon.",
   },
   {
-    question: "What is the price of a solar system in India without a subsidy?",
+    question: "Price of solar system without subsidy?",
     answer: [
-      "If you are planning to install solar for home or housing societies, the solar panel for home price list we’ve curated will greatly help you. Here's the reference about the range of solar panels for home cost without a subsidy in India:",
-      "2 kW rooftop solar system: ₹1,51,000 to ₹2,28,000",
-      "3 kW rooftop solar system: ₹1,92,000 to ₹2,63,000",
-      "4 kW rooftop solar system: ₹2,40,000 to ₹3,19,000",
-      "5 kW rooftop solar system: ₹2,87,000 to ₹4,14,000",
-      "7 kW rooftop solar system: ₹4,21,000 to ₹5,39,000",
-      "10 kW rooftop solar system: ₹5,59,000 to ₹7,08,000",
+      "Prices vary by size (approximate range):",
+      "2 kW: ₹1.5L - ₹2.28L",
+      "3 kW: ₹1.92L - ₹2.63L",
+      "5 kW: ₹2.87L - ₹4.14L",
+      "10 kW: ₹5.59L - ₹7.08L",
     ],
   },
   {
-    question: "What are the different types of Solar systems?",
+    question: "What are the types of Solar systems?",
     answer: [
-      "There are 3 types of Solar systems depending on whether the plant is linked to the power grid or battery systems for storage.",
-
-      "On-grid solar systems use common solar inverters and are connected to the public electricity grid. Any excess solar power that you generate is exported to the electricity grid and one usually get paid a feed-in-tariff or credits for the energy you export. The policy for getting credits for energy exported to the credit is termed as “Net-Metering Policy” and is available currently in most states of India.",
-
-      "Off-grid solar systems are not connected to the electricity grid and therefore requires battery storage. An off-grid solar system must be designed appropriately so that it will generate enough power throughout the year and have enough battery capacity to meet the home’s requirements, even in the depths of winter when there is less sunlight.",
-
-      "Hybrid solar systems combines solar and battery storage in one and are now available in many different forms and configurations. This means being able to store solar energy that is generated during the day and using it at night. When the stored energy is depleted, the grid is there as backup, allowing consumers to have the best of both worlds.",
+      "1. On-grid: Connected to the public grid; exports excess power for credits (Net-Metering).",
+      "2. Off-grid: Uses batteries for storage; not connected to the grid.",
+      "3. Hybrid: Combines both grid connection and battery storage for backup.",
     ],
   },
   {
-    question:
-      "Do solar panels generate electricity even during monsoon and winter?",
+    question: "Do panels work in monsoon/winter?",
     answer:
-      "Yes, Solar panels do produce electricity in cloudy or rainy weather albeit with reduced efficiency. This fall in production is considered in the unit generation estimates provided for every project.",
+      "Yes, but with reduced efficiency. Our generation estimates already account for weather variations.",
   },
   {
-    question: "How much electricity does a solar plant produce?",
+    question: "How much electricity is produced?",
     answer:
-      "The production level of a solar plant depends on multiple factors like radiation levels, amount of sunlight received, plant design and quality of components. On an average, 1 kW solar plant produces 4 units of electricity per day.",
+      "On average, a 1 kW plant produces about 4 units of electricity per day, depending on weather and design.",
   },
   {
     question: "What is Net metering?",
     answer:
-      "Net Metering is a system that gives solar energy owners credits for the power that they add to the grid. When solar panels produce excess power, that power is sent to the grid. And this power can be ‘taken back’ when the solar plants are not functioning – example, during the night. When a unit of solar energy that has been ‘net metered’, the bi-directional electricity meter will run backwards. Customers are billed only for the ‘net’ energy use.",
+      "A billing mechanism where you get credits for excess power sent to the grid. You are only billed for the 'net' energy used.",
   },
   {
-    question: "How do I decide what size of plant I need?",
-    answer: [
-      "The size of your Solar plant depends on the following factors",
-
-      "Your electricity consumption pattern",
-      "Available shadow free area",
-      "Solar irradiation in your area",
-      "Once you enlist your interest in a solar project, We conducts a scientific mapping of the appropriate project size for you.",
-    ],
-  },
-
-  {
-    question: "What is the life of a rooftop solar system?",
+    question: "How do I decide the plant size?",
     answer:
-      "The Solar Plant life is 25 years. The main components are solar panels and inverters. Solar panels have a warranty of 25 years and inverter warranty ranges from 5-12 years.",
+      "It depends on your electricity consumption, shadow-free roof area, and local sunlight. We provide a scientific mapping to help you decide.",
   },
   {
-    question: "Do Solar Rooftop projects have a high maintenance cost?",
+    question: "What is the lifespan of the system?",
     answer:
-      "A Solar Rooftop module comprises minimal moving parts and hence has very low maintenance cost. SolarSquare Energy provides first 5-year maintenance free of cost to clients ensuring a hassle free experience for all our customers.",
+      "The system lasts about 25 years. Panels usually have a 25-year warranty, and inverters have 5-12 years.",
   },
   {
-    question: "Do l need to clean my Solar plant?",
+    question: "Is maintenance expensive?",
     answer:
-      "It is a good practice to clean the solar panels 1-2 times a month. It is safer to clean the panels early in the morning or at night when no incident sun rays are present and the power plant is not producing any electricity. You can simply use a clean wet cloth, soft nylon brush or sponge to wipe the surface but ensure the panels are clear of any moisture. Don’t use metal brushes or detergents as these may streak the glass of the panel.",
+      "No, costs are very low due to few moving parts. We also provide the first 5 years of maintenance for free.",
   },
   {
-    question: "How much does a solar Plant cost?",
+    question: "Do I need to clean the panels?",
     answer:
-      "The answer depends on a number of factors like grid type, system size, specifications of the system, your electricity consumption pattern, etc. When you schedule a solar site assessment, our engineers visit your premises, they evaluate the feasibility of solar power system on your rooftop by analyzing a number of engineering parameters like shadow profiling, design 3D-structure layouts, etc. to determine the most optimized system size at the best price for you.",
+      "Yes, 1-2 times a month using water and a soft cloth/sponge. Avoid detergents and clean only when panels are cool (morning/night).",
   },
   {
-    question: "What is the break-even period for Solar rooftop projects?",
+    question: "How much does it cost?",
     answer:
-      "Rooftop solar projects are among the most lucrative investments for industrial, commercial and residential projects. The breakeven is achieved in 2-4 years itself, while you enjoy savings for the project life of 25 years.",
+      "Cost depends on system size and components. Our engineers will determine the best price after a site assessment.",
   },
   {
-    question: "Are financing options available for Solar Rooftop projects?",
+    question: "What is the break-even period?",
     answer:
-      "LightHouse Energy provides lucrative EMI options while also facilitating collateral free loan facilities provided by various banking institutions for solar projects.",
+      "Typically 2-4 years. After that, you enjoy free electricity for the remainder of the 25-year lifespan.",
   },
   {
-    question:
-      "Are there any subsidies provided by the government for solar projects?",
+    question: "Are financing options available?",
+    answer:
+      "Yes, we offer EMI options and facilitate collateral-free loans from various banks.",
+  },
+  {
+    question: "Are there government subsidies?",
     answer: {
-      info: "Below are the main government subsidy slabs for residential solar projects in India:",
+      info: "Yes, central subsidies are available for residential projects:",
       table: [
-        { segment: "Individual house", projectSize: "1kW", subsidy: "₹30,000" },
-        { segment: "Individual house", projectSize: "2kW", subsidy: "₹60,000" },
         {
-          segment: "Individual house",
-          projectSize: "Above 3kW",
-          subsidy: "₹78,000",
+          segment: "Individual",
+          projectSize: "1kW - 2kW",
+          subsidy: "₹30k - ₹60k",
         },
-        {
-          segment: "Group Housing Societies/Residential Welfare Associations",
-          projectSize: "Per kW",
-          subsidy: "₹18,000/kw",
-        },
+        { segment: "Individual", projectSize: "Above 3kW", subsidy: "₹78,000" },
+        { segment: "Societies", projectSize: "Per kW", subsidy: "₹18,000/kw" },
       ],
       additional_state_subsidy:
-        "At present, the Uttar Pradesh state government provides an additional solar subsidy of ₹15,000 per kw (max ₹30,000) when you install a rooftop solar system, bringing the total maximum subsidy amount to ₹1,08,000.",
+        "Note: Some states (like UP) offer additional subsidies up to ₹30,000 extra.",
     },
   },
 ];
 
 export default function FAQs() {
-  return (
-    <>
-      <div className="max-w-[85rem] container mx-auto px-4 md:px-6 2xl:max-w-[1400px] py-24 lg:py-32">
-        {/* Title */}
-        <div className="max-w-2xl mx-auto text-center mb-10 lg:mb-14">
-          <h2 className="text-2xl font-bold md:text-4xl md:leading-tight">
-            Your questions, answered
-          </h2>
-          <p className="mt-1 text-muted-foreground">
-            Answers to the most frequently asked questions.
-          </p>
-        </div>
-        {/* End Title */}
+  const [searchQuery, setSearchQuery] = useState("");
 
-        <div className="max-w-2xl mx-auto">
+  // Filter Logic
+  const filteredFaqs = faqs.filter((faq) => {
+    const query = searchQuery.toLowerCase();
+    const questionMatch = faq.question.toLowerCase().includes(query);
+
+    // Check answer text (handling different data structures)
+    let answerMatch = false;
+    if (typeof faq.answer === "string") {
+      answerMatch = faq.answer.toLowerCase().includes(query);
+    } else if (Array.isArray(faq.answer)) {
+      answerMatch = faq.answer.some((line) =>
+        line.toLowerCase().includes(query)
+      );
+    } else if (typeof faq.answer === "object" && faq.answer.info) {
+      answerMatch = faq.answer.info.toLowerCase().includes(query);
+    }
+
+    return questionMatch || answerMatch;
+  });
+
+  return (
+    <div className="max-w-[85rem] container mx-auto px-4 md:px-6 2xl:max-w-[1400px] py-24 lg:py-32">
+      {/* Title */}
+      <div className="max-w-2xl mx-auto text-center mb-10 lg:mb-14">
+        <h2 className="text-2xl font-bold md:text-4xl md:leading-tight">
+          Your questions, answered
+        </h2>
+        <p className="mt-1 text-muted-foreground">
+          Everything you need to know about going solar.
+        </p>
+      </div>
+
+      {/* Search Bar */}
+      <div className="max-w-xl mx-auto mb-10 relative">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search for answers..."
+            className="w-full pl-10 pr-4 py-3 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-sm"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+      </div>
+
+      {/* Accordion */}
+      <div className="max-w-2xl mx-auto">
+        {filteredFaqs.length > 0 ? (
           <Accordion type="single" collapsible className="w-full">
-            {faqs.map((faq, index) => (
-              <AccordionItem value={`item-${index}`} key={faq.question}>
+            {filteredFaqs.map((faq, index) => (
+              <AccordionItem value={`item-${index}`} key={index}>
                 <AccordionTrigger className="text-lg font-semibold text-left">
                   {faq.question}
                 </AccordionTrigger>
@@ -164,47 +184,51 @@ export default function FAQs() {
                   {typeof faq.answer === "string" ? (
                     <p>{faq.answer}</p>
                   ) : Array.isArray(faq.answer) ? (
-                    <ul className="list-disc pl-5">
+                    <ul className="list-disc pl-5 space-y-1">
                       {faq.answer.map((item, idx) => (
                         <li key={idx}>{item}</li>
                       ))}
                     </ul>
                   ) : typeof faq.answer === "object" && faq.answer.table ? (
                     <>
-                      <p>{faq.answer.info}</p>
-                      <table className="mt-4 w-full border-collapse">
-                        <thead>
-                          <tr className="bg-blue-100">
-                            <th className="border p-2 text-left">Segment</th>
-                            <th className="border p-2 text-left">
-                              Solar Project size
-                            </th>
-                            <th className="border p-2 text-left">Subsidy</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {faq.answer.table.map((row, idx) => (
-                            <tr key={idx}>
-                              <td className="border p-2">{row.segment}</td>
-                              <td className="border p-2">{row.projectSize}</td>
-                              <td className="border p-2">{row.subsidy}</td>
+                      <p className="mb-3">{faq.answer.info}</p>
+                      <div className="overflow-x-auto">
+                        <table className="w-full border-collapse text-sm">
+                          <thead>
+                            <tr className="bg-blue-50">
+                              <th className="border p-2 text-left">Segment</th>
+                              <th className="border p-2 text-left">Size</th>
+                              <th className="border p-2 text-left">Subsidy</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                      <p className="mt-4">
+                          </thead>
+                          <tbody>
+                            {faq.answer.table.map((row, idx) => (
+                              <tr key={idx}>
+                                <td className="border p-2">{row.segment}</td>
+                                <td className="border p-2">
+                                  {row.projectSize}
+                                </td>
+                                <td className="border p-2">{row.subsidy}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                      <p className="mt-3 text-sm italic">
                         {faq.answer.additional_state_subsidy}
                       </p>
                     </>
-                  ) : (
-                    <p>{JSON.stringify(faq.answer)}</p> // Fallback for other objects
-                  )}
+                  ) : null}
                 </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
-        </div>
+        ) : (
+          <div className="text-center py-10 text-muted-foreground">
+            <p>No results found for "{searchQuery}"</p>
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
 }

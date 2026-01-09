@@ -11,6 +11,7 @@ import SolarConsultationForm from "./components/SolarConsultationForm";
 import Products from "./pages/Products";
 import Aboutus from "./pages/Aboutus";
 import Location from "./components/Location";
+import ConsultationForm from "./pages/ConsultationForm";
 
 // Home component with your sections
 function Home() {
@@ -36,6 +37,7 @@ function App() {
         <Route path="/faqs" element={<FAQs />} />
         <Route path="/products" element={<Products />} />
         <Route path="/aboutus" element={<Aboutus />} />
+        <Route path="/consultationForm" element={<ConsultationForm />} />
         <Route path="*" element={<div>404 - Page Not Found</div>} />
       </Routes>
 

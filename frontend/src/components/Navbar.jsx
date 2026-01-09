@@ -3,11 +3,15 @@ import React, { useState } from "react";
 import { navLinks } from "../constants";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowUpRight, LucideMenu, X } from "lucide-react";
+import ConsultationForm from "../pages/ConsultationForm";
+import { useNavigate } from "react-router-dom";
+
+
 
 const Navbar = () => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+const navigate = useNavigate();
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev);
   };
@@ -20,7 +24,14 @@ const Navbar = () => {
     <nav className="flex justify-center">
       {/* Large device navbar */}
       <div className="hidden lg:flex fixed justify-between z-50 mt-4 w-11/12 p-2 items-center rounded-full bg-white/10 backdrop-blur-sm">
-        <div className="flex">logo</div>
+        <div className="flex">
+          <img
+            src="/lhelogo.png"
+            alt="logo"
+            width={150}
+            className="ml-12"
+          />
+        </div>
         <ul className="flex bg-black/70 rounded-full py-2">
           {navLinks.map((link) => {
             const isActive = location.pathname === link.href;
@@ -37,7 +48,10 @@ const Navbar = () => {
             );
           })}
         </ul>
-        <button className="relative inline-flex h-10 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+        <button
+          onClick={() => navigate("/consultationForm")}
+          className="relative inline-flex h-10 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
+        >
           <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
           <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
             <ArrowUpRight className="w-4 h-4 mr-1" /> Go Solar
@@ -48,14 +62,17 @@ const Navbar = () => {
       {/* Mobile device navbar */}
       <div className="lg:hidden fixed top-3 z-50 w-full flex justify-center">
         <div className="w-[360px] sm:w-[620px] flex justify-between items-center p-2 bg-white/10 backdrop-blur-sm rounded-full">
-          <div className="text-gray-900 font-bold">logo</div>
+          <div className="ml-4">
+            
+            <img src="/lhelogo.png" alt="logo" width={140}/>
+          </div>
           <button
             onClick={toggleMobileMenu}
             className="text-black p-2 hover:bg-white/10 rounded-lg transition-colors"
             aria-label="Toggle menu"
           >
-            <LucideMenu className="w-7 h-7 text-cyan-300" />{" "}
-            {/* Only show menu icon here */}
+            <LucideMenu className="w-7 h-7 text-blue-800" />
+            
           </button>
         </div>
 
@@ -102,7 +119,10 @@ const Navbar = () => {
               {/* Mobile CTA button */}
               <div className="px-6 py-4 mt-8">
                 <button
-                  onClick={closeMobileMenu}
+                  onClick={() => {
+                    closeMobileMenu();
+                    navigate("/consultationForm");
+                  }}
                   className="w-full relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
                 >
                   <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />

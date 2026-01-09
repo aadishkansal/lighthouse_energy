@@ -1,3 +1,5 @@
+import { IconBrandFacebook, IconBrandInstagram, IconBrandInstagramFilled, IconBrandWhatsapp } from "@tabler/icons-react";
+import { BuildingIcon, CalculatorIcon, FactoryIcon, HouseIcon, MailIcon, YoutubeIcon } from "lucide-react";
 import React from "react";
 
 import { Link } from "react-router-dom";
@@ -15,35 +17,47 @@ const Footer = () => {
                 <div className="items-center flex">
                   <img
                     className=""
-                    // src="/streamlogo.svg"
+                    src="/lhelogo.png"
                     alt="logo"
-                    width={40}
-                    height={60}
+                    width={200}
+                    height={70}
                   />
-                  <img
+                  {/* <img
                     className="ml-2"
                     // src="/StreamCalendar.svg"
                     alt="streamcalendar"
                     width={153}
                     height={30}
-                  />
+                  /> */}
                 </div>
               </Link>
-              <h4 className="mt-2 text-sm text-gray-600">
-                Your personal schedule
-              </h4>
             </div>
 
             {/* Social Links */}
             <div className="flex flex-row gap-3 items-center mt-6">
-              <a href="/" className="hover:opacity-75 transition-opacity">
-                <img src="/mail.svg" alt="Email" width={30} />
+              <a
+                href="/"
+                className="hover:opacity-75 transition-opacity hover:pointer"
+              >
+                <MailIcon />
               </a>
-              <a href="/" className="hover:opacity-75 transition-opacity">
-                <img src="/yt.svg" alt="YouTube" />
+              <a
+                href="https://www.youtube.com/@LightHouseEnergy"
+                className="hover:opacity-75 transition-opacity hover:pointer"
+              >
+                <IconBrandFacebook />
               </a>
-              <a href="/" className="hover:opacity-75 transition-opacity">
-                <img src="/x.svg" alt="X (Twitter)" width={25} />
+              <a
+                href="https://www.youtube.com/@LightHouseEnergy"
+                className="hover:opacity-75 transition-opacity hover:pointer"
+              >
+                <IconBrandInstagram />
+              </a>
+              <a
+                href="https://www.youtube.com/@LightHouseEnergy"
+                className="hover:opacity-75 transition-opacity hover:pointer"
+              >
+                <YoutubeIcon />
               </a>
             </div>
           </div>
@@ -55,16 +69,40 @@ const Footer = () => {
             </h3>
             <div className="space-y-3">
               <Link
-                href="#"
-                className="block font-medium text-base text-slate-500 hover:text-blue-600 transition-colors"
+                to="/products"
+                className="flex items-center gap-2 font-medium text-base text-slate-500 hover:text-blue-600 transition-colors"
               >
-                Features
+                <span>
+                  <HouseIcon />
+                </span>
+                Residential
               </Link>
               <Link
-                href="#"
-                className="block font-medium text-base text-slate-500 hover:text-blue-600 transition-colors"
+                to="/products"
+                className="flex items-center gap-2 font-medium text-base text-slate-500 hover:text-blue-600 transition-colors"
               >
-                Pricing
+                <span>
+                  <BuildingIcon />
+                </span>
+                Housing Society
+              </Link>
+              <Link
+                to="/products"
+                className="flex items-center gap-2 font-medium text-base text-slate-500 hover:text-blue-600 transition-colors"
+              >
+                <span>
+                  <FactoryIcon />
+                </span>
+                Commercial
+              </Link>
+              <Link
+                to="/calculator"
+                className="flex items-center gap-2 font-medium text-base text-slate-500 hover:text-blue-600 transition-colors"
+              >
+                <span>
+                  <CalculatorIcon />
+                </span>
+                Solar Calculator
               </Link>
             </div>
           </div>
@@ -97,23 +135,29 @@ const Footer = () => {
           </div>
 
           {/* Resources Section */}
-          <div className="">
+          <div className="space-y-3">
             <h3 className="font-semibold text-lg text-gray-900 mb-4">
-              Resources
+              Contact Details
             </h3>
-            <div className="space-y-3">
+            <div className="space-y-3  font-medium text-base text-slate-500  ">
+              <b>
+                Regional Address: <br></br>
+              </b>
+              10’C ,Sagar High Street, Ayodhya Bypass,Bhopal (M.P)- 462041
+            </div>
+            <div>
               <Link
                 href="#"
-                className="block font-medium text-base text-slate-500 hover:text-blue-600 transition-colors"
+                className="flex items-center gap-2 font-medium text-base text-slate-500 hover:text-blue-600 transition-colors"
               >
-                Support
+                <span>
+                  <IconBrandWhatsapp />
+                </span>
+                WhatsApp Support
               </Link>
-              <Link
-                href="#"
-                className="block font-medium text-base text-slate-500 hover:text-blue-600 transition-colors"
-              >
-                Contact
-              </Link>
+            </div>
+            <div className="font-medium text-base text-slate-500  ">
+              Contant no. - 91+ 77609 79389
             </div>
           </div>
         </div>
@@ -122,7 +166,8 @@ const Footer = () => {
       {/* Copyright Section */}
       <div className="border-t border-gray-200 mt-8 pt-6">
         <p className="text-center text-sm text-gray-500">
-          &copy; {new Date().getFullYear()} StreamCalendar. All rights reserved.
+          &copy; {new Date().getFullYear()} LightHouse Energy Developers. All
+          rights reserved.
         </p>
       </div>
     </div>

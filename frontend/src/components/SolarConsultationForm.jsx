@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 const SolarConsultationForm = () => {
-  // ... (Your existing state and handleInputChange logic remains exactly the same) ...
   const [activeTab, setActiveTab] = useState("residential");
   const [formData, setFormData] = useState({
     residential: {
@@ -34,7 +33,37 @@ const SolarConsultationForm = () => {
     },
   });
 
+  // --- NEW: FUNCTION TO FETCH CITY FROM PINCODE ---
+  const fetchLocationFromPincode = async (pincode) => {
+    // 1. Get API URL (same as submit logic)
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+    try {
+      // 2. Call the new backend endpoint
+      const res = await fetch(
+        `${API_URL}/api/consultation/lookup-pincode/${pincode}`
+      );
+      const result = await res.json();
+
+      // 3. If successful, update the CITY in the active tab
+      if (result.success && result.data.city) {
+        setFormData((prev) => ({
+          ...prev,
+          [activeTab]: {
+            ...prev[activeTab],
+            city: result.data.city, // Auto-fill the city
+          },
+        }));
+      }
+    } catch (err) {
+      console.error("Auto-location detection failed:", err);
+      // Optional: You can choose to leave the city empty so user types it manually
+    }
+  };
+
+  // --- UPDATED INPUT CHANGE HANDLER ---
   const handleInputChange = (field, value) => {
+    // 1. Update the state normally
     setFormData((prev) => ({
       ...prev,
       [activeTab]: {
@@ -42,6 +71,11 @@ const SolarConsultationForm = () => {
         [field]: value,
       },
     }));
+
+    // 2. Check if the field is pincode and has 6 digits
+    if (field === "pincode" && value.length === 6) {
+      fetchLocationFromPincode(value);
+    }
   };
 
   const handleMonthlyBillSelect = (bill) => {
@@ -51,7 +85,7 @@ const SolarConsultationForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // ---------------------------------------------------------
-  // UPDATED HANDLE SUBMIT
+  // HANDLE SUBMIT
   // ---------------------------------------------------------
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -66,10 +100,8 @@ const SolarConsultationForm = () => {
 
     console.log("Sending payload:", payload);
 
-    // 1. Get the API URL from environment variables
     const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-    // 2. Use the variable instead of hardcoded localhost
     fetch(`${API_URL}/api/consultation/submit`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -84,7 +116,7 @@ const SolarConsultationForm = () => {
       })
       .then((data) => {
         console.log("Submission successful:", data);
-        alert("Consultation booked successfully!"); // Added user feedback
+        alert("Consultation booked successfully!");
 
         // Reset form
         setFormData({
@@ -126,8 +158,6 @@ const SolarConsultationForm = () => {
         setIsSubmitting(false);
       });
   };
-
-  // ... (Rest of your render logic remains exactly the same) ...
 
   const monthlyBillOptions = [
     "Less than ₹1500",
@@ -181,6 +211,20 @@ const SolarConsultationForm = () => {
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block mb-1">
+            Pin code <span className="text-red-400">*</span>
+          </label>
+          <input
+            type="text"
+            maxLength={6} // Added max length for better UX
+            value={formData.residential.pincode}
+            onChange={(e) => handleInputChange("pincode", e.target.value)}
+            className="w-full bg-transparent border border-white/40 rounded-md px-4 py-2 placeholder-white/70 outline-none focus:border-white"
+            placeholder="Enter pincode"
+          />
+        </div>
+
+        <div>
+          <label className="block mb-1">
             City <span className="text-red-400">*</span>
           </label>
           <input
@@ -189,17 +233,6 @@ const SolarConsultationForm = () => {
             onChange={(e) => handleInputChange("city", e.target.value)}
             className="w-full bg-transparent border border-white/40 rounded-md px-4 py-2 placeholder-white/70 outline-none focus:border-white"
             placeholder="Enter city"
-          />
-        </div>
-
-        <div>
-          <label className="block mb-1">Pin code</label>
-          <input
-            type="text"
-            value={formData.residential.pincode}
-            onChange={(e) => handleInputChange("pincode", e.target.value)}
-            className="w-full bg-transparent border border-white/40 rounded-md px-4 py-2 placeholder-white/70 outline-none focus:border-white"
-            placeholder="Enter pincode"
           />
         </div>
       </div>
@@ -262,6 +295,20 @@ const SolarConsultationForm = () => {
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block mb-1">
+            Pin code <span className="text-red-400">*</span>
+          </label>
+          <input
+            type="text"
+            maxLength={6}
+            value={formData.housing.pincode}
+            onChange={(e) => handleInputChange("pincode", e.target.value)}
+            className="w-full bg-transparent border border-white/40 rounded-md px-4 py-2 placeholder-white/70 outline-none focus:border-white"
+            placeholder="Enter pincode"
+          />
+        </div>
+
+        <div>
+          <label className="block mb-1">
             City <span className="text-red-400">*</span>
           </label>
           <input
@@ -270,17 +317,6 @@ const SolarConsultationForm = () => {
             onChange={(e) => handleInputChange("city", e.target.value)}
             className="w-full bg-transparent border border-white/40 rounded-md px-4 py-2 placeholder-white/70 outline-none focus:border-white"
             placeholder="Enter city"
-          />
-        </div>
-
-        <div>
-          <label className="block mb-1">Pin code</label>
-          <input
-            type="text"
-            value={formData.housing.pincode}
-            onChange={(e) => handleInputChange("pincode", e.target.value)}
-            className="w-full bg-transparent border border-white/40 rounded-md px-4 py-2 placeholder-white/70 outline-none focus:border-white"
-            placeholder="Enter pincode"
           />
         </div>
       </div>
@@ -399,6 +435,20 @@ const SolarConsultationForm = () => {
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block mb-1">
+            Pin code <span className="text-red-400">*</span>
+          </label>
+          <input
+            type="text"
+            maxLength={6}
+            value={formData.commercial.pincode}
+            onChange={(e) => handleInputChange("pincode", e.target.value)}
+            className="w-full bg-transparent border border-white/40 rounded-md px-4 py-2 placeholder-white/70 outline-none focus:border-white"
+            placeholder="Enter pincode"
+          />
+        </div>
+
+        <div>
+          <label className="block mb-1">
             City <span className="text-red-400">*</span>
           </label>
           <input
@@ -407,17 +457,6 @@ const SolarConsultationForm = () => {
             onChange={(e) => handleInputChange("city", e.target.value)}
             className="w-full bg-transparent border border-white/40 rounded-md px-4 py-2 placeholder-white/70 outline-none focus:border-white"
             placeholder="Enter city"
-          />
-        </div>
-
-        <div>
-          <label className="block mb-1">Pin code</label>
-          <input
-            type="text"
-            value={formData.commercial.pincode}
-            onChange={(e) => handleInputChange("pincode", e.target.value)}
-            className="w-full bg-transparent border border-white/40 rounded-md px-4 py-2 placeholder-white/70 outline-none focus:border-white"
-            placeholder="Enter pincode"
           />
         </div>
       </div>

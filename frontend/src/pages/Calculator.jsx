@@ -150,7 +150,7 @@ export default function Calculator({ calculationId }) {
   return (
     <>
       {error && <p className="text-red-500">{error}</p>}
-      <div className="relative flex flex-col w-screen h-screen justify-center items-center bg-[url(/calsolar.jpg)] bg-cover bg-center">
+      <div className="relative flex flex-col w-screen h-screen justify-center items-center bg-[url(/calsolar.png)] bg-cover bg-center">
         <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(0,0,0,0)_50%,rgba(0,0,0,0.6)_100%)] pointer-events-none"></div>
         <h1 className="font-black text-white text-3xl  shadow-2xl mb-8 mt-10">
           Calculator Your Savings
