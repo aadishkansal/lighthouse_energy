@@ -524,39 +524,40 @@ const SolarConsultationForm = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex justify-between items-center bg-black/50 p-1 rounded-full text-white mb-6">
+      <div className="flex w-full justify-between items-center bg-black/50 p-1 rounded-full text-white mb-6">
         <button
           onClick={() => setActiveTab("residential")}
-          className={`px-4 py-2 rounded-full transition font-medium text-sm ${
+          className={`flex-1 py-2 rounded-full transition font-medium text-xs sm:text-sm whitespace-nowrap ${
             activeTab === "residential"
-              ? "bg-white text-black"
+              ? "bg-white text-black shadow-sm"
               : "hover:bg-white/10"
           }`}
         >
           Residential
         </button>
+
         <button
           onClick={() => setActiveTab("housing")}
-          className={`px-4 py-2 rounded-full transition font-medium text-sm ${
+          className={`flex-1 py-2 rounded-full transition font-medium text-xs sm:text-sm whitespace-nowrap ${
             activeTab === "housing"
-              ? "bg-white text-black"
+              ? "bg-white text-black shadow-sm"
               : "hover:bg-white/10"
           }`}
         >
           Housing Society
         </button>
+
         <button
           onClick={() => setActiveTab("commercial")}
-          className={`px-4 py-2 rounded-full transition font-medium text-sm ${
+          className={`flex-1 py-2 rounded-full transition font-medium text-xs sm:text-sm whitespace-nowrap ${
             activeTab === "commercial"
-              ? "bg-white text-black"
+              ? "bg-white text-black shadow-sm"
               : "hover:bg-white/10"
           }`}
         >
           Commercial
         </button>
       </div>
-
       {/* Form */}
       <form
         onSubmit={handleSubmit}

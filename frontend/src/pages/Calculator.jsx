@@ -4,6 +4,7 @@ import {
   Calendar,
   CalendarCheck,
   CalendarRange,
+  Loader2, // Imported Loader Icon
 } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
 
@@ -19,6 +20,11 @@ export default function Calculator({ calculationId }) {
     propertyType: "",
     whatsappContact: true,
   });
+
+  // --- New Loading State ---
+  const [isLoading, setIsLoading] = useState(false);
+  // -------------------------
+
   const [error, setError] = useState("");
   const [calculation, setCalculation] = useState(null);
   const [calculationIdState, setCalculationIdState] = useState(
@@ -48,7 +54,7 @@ export default function Calculator({ calculationId }) {
       }
     }
     loadCalculation();
-  }, [calculationIdState]); // ✅ No dependency warning now because API_URL is external
+  }, [calculationIdState]);
 
   useEffect(() => {
     if (calculation && resultsRef.current) {
@@ -57,10 +63,6 @@ export default function Calculator({ calculationId }) {
         block: "start",
       });
     }
-  }, [calculation]);
-
-  useEffect(() => {
-    console.log("Current calculation:", calculation);
   }, [calculation]);
 
   const Statewise = [
@@ -121,6 +123,10 @@ export default function Calculator({ calculationId }) {
     e.preventDefault();
 
     async function submitCalculation() {
+      // 1. Start Loading
+      setIsLoading(true);
+      setError(""); // Clear previous errors
+
       try {
         const res = await fetch(`${API_URL}/api/solar-calculator/calculate`, {
           method: "POST",
@@ -135,13 +141,15 @@ export default function Calculator({ calculationId }) {
         if (json.success) {
           setCalculation(json.data);
           setCalculationIdState(json.data.calculationId);
-          setError("");
         } else {
           setError(json.message || "Calculation failed");
         }
       } catch (err) {
         console.error(err);
         setError("Network error");
+      } finally {
+        // 2. Stop Loading (runs whether success or fail)
+        setIsLoading(false);
       }
     }
     submitCalculation();
@@ -149,11 +157,15 @@ export default function Calculator({ calculationId }) {
 
   return (
     <>
-      {error && <p className="text-red-500">{error}</p>}
+      {error && (
+        <p className="text-red-500 text-center mt-4 bg-white/80 p-2 rounded">
+          {error}
+        </p>
+      )}
       <div className="relative flex flex-col w-screen h-screen justify-center items-center bg-[url(/calsolar.png)] bg-cover bg-center">
         <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(0,0,0,0)_50%,rgba(0,0,0,0.6)_100%)] pointer-events-none"></div>
-        <h1 className="font-black text-white text-3xl  shadow-2xl mb-8 mt-10">
-          Calculator Your Savings
+        <h1 className="font-black text-white text-3xl shadow-2xl mb-8 mt-10">
+          Calculate Your Savings
         </h1>
         <form
           onSubmit={handleSubmit}
@@ -166,7 +178,7 @@ export default function Calculator({ calculationId }) {
               </label>
               <select
                 name="state"
-                className="outline-gray-500 border border-gray-100 rounded-lg p-2 bg-black/50 text-white"
+                className="outline-gray-500 border border-gray-100 rounded-lg p-2 bg-black/50 text-white w-full"
                 value={formData.state}
                 onChange={handleInputChange}
                 required
@@ -189,7 +201,7 @@ export default function Calculator({ calculationId }) {
                 type="number"
                 name="monthlyBill"
                 placeholder="₹ Average Monthly Bill"
-                className="outline-gray-500 border border-gray-100 rounded-lg p-1 px-2 text-center bg-transparent"
+                className="outline-gray-500 border border-gray-100 rounded-lg p-1 px-2 text-center bg-transparent w-full"
                 value={formData.monthlyBill}
                 onChange={handleInputChange}
                 required
@@ -205,7 +217,7 @@ export default function Calculator({ calculationId }) {
                 type="number"
                 name="rooftopArea"
                 placeholder="Rooftop Area(approx : in sq.ft.)"
-                className="outline-gray-500 border border-gray-100 px-3 rounded-lg p-1 text-center bg-transparent"
+                className="outline-gray-500 border border-gray-100 px-3 rounded-lg p-1 text-center bg-transparent w-full"
                 value={formData.rooftopArea}
                 onChange={handleInputChange}
                 required
@@ -221,7 +233,7 @@ export default function Calculator({ calculationId }) {
                 type="tel"
                 name="mobileNumber"
                 placeholder="Mobile Number"
-                className="outline-gray-500 border border-gray-100 px-3 rounded-lg p-1 text-center bg-transparent"
+                className="outline-gray-500 border border-gray-100 px-3 rounded-lg p-1 text-center bg-transparent w-full"
                 value={formData.mobileNumber}
                 onChange={handleInputChange}
                 required
@@ -259,12 +271,25 @@ export default function Calculator({ calculationId }) {
           </div>
 
           <div className="flex justify-center p-2">
+            {/* --- UPDATED BUTTON --- */}
             <button
               type="submit"
-              className="p-1 px-12 rounded-full font-semibold bg-black hover:bg-white hover:text-black transition text-white"
+              disabled={isLoading} // Disable while loading
+              className={`flex items-center gap-2 p-1 px-12 rounded-full font-semibold transition text-white ${
+                isLoading
+                  ? "bg-gray-500 cursor-not-allowed opacity-70"
+                  : "bg-black hover:bg-white hover:text-black"
+              }`}
             >
-              Calculate
+              {isLoading ? (
+                <>
+                  <Loader2 className="animate-spin h-5 w-5" /> Calculating...
+                </>
+              ) : (
+                "Calculate"
+              )}
             </button>
+            {/* ---------------------- */}
           </div>
         </form>
       </div>

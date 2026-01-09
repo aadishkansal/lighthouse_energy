@@ -6,6 +6,11 @@ import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
 export function Testimonial() {
   return (
     <div className="h-[40rem] rounded-md flex flex-col antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
+      {/* --- Added Heading --- */}
+      <h2 className="text-3xl md:text-4xl font-extrabold text-neutral-700 text-center mb-8 relative z-10 ">
+        What our customers says?
+      </h2>
+
       <InfiniteMovingCards
         items={testimonials}
         direction="right"

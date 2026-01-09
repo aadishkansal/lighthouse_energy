@@ -63,10 +63,24 @@ export function FeaturesSection() {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 relative z-10 py-10 max-w-7xl mx-auto">
-      {features.map((feature, index) => (
-        <Feature key={feature.title} {...feature} index={index} />
-      ))}
+    <div className="py-10 md:py-20 bg-white dark:bg-neutral-900">
+      {/* --- Added Heading Section --- */}
+      <div className="max-w-7xl mx-auto px-4 mb-12 text-center">
+        <h2 className="text-3xl md:text-4xl font-extrabold text-neutral-700">
+          Why choose us?
+        </h2>
+        <p className="mt-4 text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+          We combine cutting-edge technology with expert craftsmanship to
+          deliver solar solutions.
+        </p>
+      </div>
+      {/* ----------------------------- */}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 relative z-10 max-w-7xl mx-auto">
+        {features.map((feature, index) => (
+          <Feature key={feature.title} {...feature} index={index} />
+        ))}
+      </div>
     </div>
   );
 }

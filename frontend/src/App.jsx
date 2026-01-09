@@ -12,6 +12,9 @@ import Products from "./pages/Products";
 import Aboutus from "./pages/Aboutus";
 import Location from "./components/Location";
 import ConsultationForm from "./pages/ConsultationForm";
+import { YoutubeCard } from "./components/YoutubeCard";
+import { AwardsSection } from "./components/AwardsSection";
+import { SolarTypesSection } from "./pages/SolarTypesSection";
 
 // Home component with your sections
 function Home() {
@@ -21,8 +24,10 @@ function Home() {
       <FeaturesSection />
       <Location/>
       <Testimonial />
-      <Calculator/>
+      <AwardsSection/>
+      <YoutubeCard/>
       <FAQs />
+
     </>
   );
 }
@@ -38,6 +43,7 @@ function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/aboutus" element={<Aboutus />} />
         <Route path="/consultationForm" element={<ConsultationForm />} />
+        <Route path="/typesofconnections" element={<SolarTypesSection />} />
         <Route path="*" element={<div>404 - Page Not Found</div>} />
       </Routes>
 

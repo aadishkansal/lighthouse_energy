@@ -243,12 +243,12 @@ const Products = () => {
 
       <div className="flex flex-col sm:flex-row justify-between gap-3 items-center mb-16">
         <h1 className="font-extrabold sm:text-4xl text-xl  ">
-          Book your <span className="text-cyan-500">FREE</span> consultation
+          Book your <span className="text-blue-900">FREE</span> consultation
           today!
         </h1>
         <form
           onSubmit={handleSubmit}
-          className=" flex flex-col gap-4 rounded-xl py-10 px-4 text-white p-6 bg-black shadow-3xl text-sm max-w-lg h-full "
+          className=" flex flex-col gap-4 rounded-xl py-10 px-4 text-white p-6 bg-blue-950 shadow-3xl text-sm max-w-lg h-full "
         >
           <div className="space-y-4">
             <div>
@@ -414,9 +414,6 @@ const Products = () => {
         <img src="/resBenlg.svg"></img>
       </div>
 
-      <div>
-        <h1 className="font-extrabold text-2xl text-center">Why choose us?</h1>
-      </div>
       <FeaturesSection />
 
       <div className="space-y-3">
@@ -430,7 +427,7 @@ const Products = () => {
         <ul className="list-disc ml-6 ">
           <li>
             <a
-              href="/"
+              href="/typesofconnections"
               className="underline font-bold text-lg hover:text-blue-700  "
             >
               On-Grid Solar Systems
@@ -441,7 +438,7 @@ const Products = () => {
           </li>
           <li>
             <a
-              href="/"
+              href="/typesofconnections"
               className="underline font-bold text-lg hover:text-blue-700  "
             >
               Off-Grid Solar Systems
@@ -451,7 +448,7 @@ const Products = () => {
           </li>
           <li>
             <a
-              href="/"
+              href="/typesofconnections"
               className="underline font-bold text-lg hover:text-blue-700  "
             >
               Hybrid Solar Systems
@@ -495,12 +492,12 @@ const Products = () => {
       </div>
       <div className="flex flex-col sm:flex-row justify-between gap-3 items-center mb-16">
         <h1 className="font-extrabold sm:text-4xl text-xl  ">
-          Book your <span className="text-cyan-500">FREE</span> consultation
+          Book your <span className="text-blue-900">FREE</span> consultation
           today!
         </h1>
         <form
           onSubmit={handleSubmit}
-          className=" flex flex-col gap-4 rounded-xl py-10 px-4 text-white p-6 bg-black shadow-3xl text-sm max-w-lg h-full  "
+          className=" flex flex-col gap-4 rounded-xl py-10 px-4 text-white p-6 bg-blue-950 shadow-3xl text-sm max-w-lg h-full  "
         >
           <div className="space-y-4">
             <div>
@@ -684,9 +681,6 @@ const Products = () => {
         <img src="/comBen.svg"></img>
       </div>
 
-      <div>
-        <h1 className="font-extrabold text-2xl text-center">Why choose us?</h1>
-      </div>
       <FeaturesSection />
 
       <div className="space-y-3">
@@ -700,7 +694,7 @@ const Products = () => {
         <ul className="list-disc ml-6 ">
           <li>
             <a
-              href="/"
+              href="/typesofconnections"
               className="underline font-bold text-lg hover:text-blue-700  "
             >
               On-Grid Solar Systems
@@ -711,7 +705,7 @@ const Products = () => {
           </li>
           <li>
             <a
-              href="/"
+              href="/typesofconnections"
               className="underline font-bold text-lg hover:text-blue-700  "
             >
               Off-Grid Solar Systems
@@ -721,7 +715,7 @@ const Products = () => {
           </li>
           <li>
             <a
-              href="/"
+              href="/typesofconnections"
               className="underline font-bold text-lg hover:text-blue-700  "
             >
               Hybrid Solar Systems
@@ -763,12 +757,12 @@ const Products = () => {
       </div>
       <div className="flex flex-col sm:flex-row justify-between gap-3 items-center mb-16">
         <h1 className="font-extrabold sm:text-4xl text-xl  ">
-          Book your <span className="text-cyan-500">FREE</span> consultation
+          Book your <span className="text-blue-900">FREE</span> consultation
           today!
         </h1>
         <form
           onSubmit={handleSubmit}
-          className=" flex flex-col gap-4 rounded-xl py-10 px-4 text-white p-6 bg-black shadow-3xl text-sm max-w-lg h-full "
+          className=" flex flex-col gap-4 rounded-xl py-10 px-4 text-white p-6 bg-blue-950 shadow-3xl text-sm max-w-lg h-full "
         >
           <div className="space-y-4">
             <div>
@@ -1023,8 +1017,6 @@ const Products = () => {
         <div className="flex justify-center items-center">
           <img src="/houBen.svg"></img>
         </div>
-
-        <h1 className="font-extrabold text-2xl text-center">Why choose us?</h1>
       </div>
       <FeaturesSection />
 
@@ -1039,7 +1031,7 @@ const Products = () => {
         <ul className="list-disc ml-6 ">
           <li>
             <a
-              href="/"
+              href="/typesofconnections"
               className="underline font-bold text-lg hover:text-blue-700  "
             >
               On-Grid Solar Systems
@@ -1050,7 +1042,7 @@ const Products = () => {
           </li>
           <li>
             <a
-              href="/"
+              href="/typesofconnections"
               className="underline font-bold text-lg hover:text-blue-700  "
             >
               Off-Grid Solar Systems
@@ -1060,7 +1052,7 @@ const Products = () => {
           </li>
           <li>
             <a
-              href="/"
+              href="/typesofconnections"
               className="underline font-bold text-lg hover:text-blue-700  "
             >
               Hybrid Solar Systems
@@ -1094,12 +1086,12 @@ const Products = () => {
       </div>
 
       {/* Tabs */}
-      <div className="bg-gray-300 p-2 space-y-3 sm:rounded-4xl rounded-xl flex flex-col sm:flex-row sm:space-y-0 sm:space-x-3 z-10">
+      <div className="bg-yellow-400/70  p-2 space-y-3 sm:rounded-4xl rounded-xl flex flex-col sm:flex-row sm:space-y-0 sm:space-x-3 z-10">
         <button
           className={`p-2 px-4 rounded-full flex gap-1 hover:text-white hover:bg-blue-900 ${
             activeTab === "residential"
-              ? "bg-black text-white"
-              : "bg-white text-black"
+              ? "bg-blue-900 text-white"
+              : "bg-white text-blue-950"
           }`}
           onClick={() => handleTabChange("residential")}
         >
@@ -1110,8 +1102,8 @@ const Products = () => {
         <button
           className={`p-2 px-4 rounded-full flex gap-1 hover:text-white hover:bg-blue-900  ${
             activeTab === "housing"
-              ? "bg-black text-white"
-              : "bg-white text-black"
+              ? "bg-blue-900 text-white"
+              : "bg-white text-blue-950"
           }`}
           onClick={() => handleTabChange("housing")}
         >
@@ -1121,8 +1113,8 @@ const Products = () => {
         <button
           className={`p-2 px-4 rounded-full flex gap-1 hover:text-white hover:bg-blue-900 ${
             activeTab === "commercial"
-              ? "bg-black text-white"
-              : "bg-white text-black"
+              ? "bg-blue-900 text-white"
+              : "bg-white text-blue-950"
           }`}
           onClick={() => handleTabChange("commercial")}
         >
