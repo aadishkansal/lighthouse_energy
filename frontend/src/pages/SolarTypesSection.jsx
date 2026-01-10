@@ -116,9 +116,8 @@ const solarTypes = [
     subtitle: "Most Popular & Cost Effective",
     description:
       "Connected directly to your local utility grid. You generate power during the day and use it. Any excess is sent back to the grid (Net Metering), earning you credits to offset night usage.",
-    image:
-      "https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=800&auto=format&fit=crop", // Placeholder
-    videoId: "dQw4w9WgXcQ", // ⚠️ Replace with On-Grid explainer Video ID
+    image: "/ongrid.png", // Placeholder
+    videoId: "VFa3T2Qckx0", // ⚠️ Replace with On-Grid explainer Video ID
     icon: <IconPlugConnected size={24} />,
     features: [
       "Homes with reliable electricity",
@@ -132,9 +131,8 @@ const solarTypes = [
     subtitle: "100% Independence",
     description:
       "A completely self-sufficient system that stores energy in batteries for use at night or cloudy days. You are not connected to the electricity grid at all.",
-    image:
-      "https://images.unsplash.com/photo-1548613053-220e3994a2e6?q=80&w=800&auto=format&fit=crop", // Placeholder
-    videoId: "dQw4w9WgXcQ", // ⚠️ Replace with Off-Grid explainer Video ID
+    image: "/offgrid.png", // Placeholder
+    videoId: "8HPkpR1gl9E", //
     icon: <IconBatteryCharging size={24} />,
     features: [
       "Remote locations without grid access",
@@ -148,9 +146,8 @@ const solarTypes = [
     subtitle: "The Best of Both Worlds",
     description:
       "Combines grid connection with battery backup. You can store cheap solar energy to use during peak hours or power outages, while still having the safety net of the grid.",
-    image:
-      "https://images.unsplash.com/photo-1613665813446-82a78c468a1d?q=80&w=800&auto=format&fit=crop", // Placeholder
-    videoId: "dQw4w9WgXcQ", // ⚠️ Replace with Hybrid explainer Video ID
+    image: "/hybrid.png", // Placeholder
+    videoId: "9vM2JwrIWOU", // ⚠️ Replace with Hybrid explainer Video ID
     icon: <IconSun size={24} />,
     features: [
       "Smart energy management",

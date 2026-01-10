@@ -34,7 +34,7 @@ const TypingText = () => {
       animate="visible"
     >
       {/* Line 1: Center by default, Left on Large (lg) */}
-      <span className="text-5xl md:text-7xl block text-center lg:text-left">
+      <span className="text-5xl md:text-6xl block text-center lg:text-left">
         {line1.split("").map((char, index) => (
           <motion.span key={`l1-${index}`} variants={letter}>
             {char}
@@ -43,7 +43,7 @@ const TypingText = () => {
       </span>
 
       {/* Line 2: Center by default, Left on Large (lg) */}
-      <span className="text-5xl md:text-7xl block text-center lg:text-left">
+      <span className="text-5xl md:text-6xl block text-center lg:text-left">
         {line2.split("").map((char, index) => (
           <motion.span key={`l2-${index}`} variants={letter}>
             {char}
@@ -52,7 +52,7 @@ const TypingText = () => {
       </span>
 
       {/* Line 3: Center by default, Left on Large (lg) */}
-      <span className="text-xl md:text-2xl block mt-4 font-sans font-bold text-gray-200 text-center lg:text-left">
+      <span className="text-xl block mt-4 font-sans font-bold text-gray-200 text-center lg:text-left">
         {line3.split("").map((char, index) => (
           <motion.span key={`l3-${index}`} variants={letter}>
             {char}

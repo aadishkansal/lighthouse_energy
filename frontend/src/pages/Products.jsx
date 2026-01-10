@@ -227,18 +227,34 @@ const Products = () => {
 
   const renderResidential = () => (
     <section className="space-y-6">
-      <div>
-        <h1 className="font-extrabold text-2xl text-center">
-          Residential Solar Solutions at Lighthouse Energy
-        </h1>
-      </div>
-      <div>
-        <p className="font-light text-center">
-          Lighthouse Energy offers affordable, high-quality rooftop solar
-          systems for homes, helping you reduce electricity bills, gain energy
-          independence, and support a greener future with premium panels,
-          competitive pricing, and fast installation.
-        </p>
+      <div className="flex flex-col lg:flex-row items-center gap-10 md:gap-16 max-w-7xl mx-auto px-4 py-12">
+        {/* Left Side: Image (appears on top on mobile) */}
+        <div className="w-full lg:w-1/2">
+          <div className="rounded-3xl overflow-hidden shadow-xl border border-gray-100">
+            <img
+              src="/residential.png"
+              alt="Residential Solar Solutions"
+              className="w-full h-auto object-cover"
+            />
+          </div>
+        </div>
+
+        {/* Right Side: Text (appears below image on mobile) */}
+        <div className="w-full lg:w-1/2 text-center lg:text-left space-y-6">
+          <div>
+            <h1 className="font-extrabold text-2xl md:text-4xl">
+              Residential Solar Solutions at Lighthouse Energy
+            </h1>
+          </div>
+          <div>
+            <p className="font-light text-lg text-gray-600">
+              Lighthouse Energy offers affordable, high-quality rooftop solar
+              systems for homes, helping you reduce electricity bills, gain
+              energy independence, and support a greener future with premium
+              panels, competitive pricing, and fast installation.
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className="flex flex-col sm:flex-row justify-between gap-3 items-center mb-16">
@@ -475,20 +491,36 @@ const Products = () => {
 
   const renderCommercial = () => (
     <section className="space-y-6">
-      <div>
-        <h1 className="font-extrabold text-2xl text-center">
-          Commercial Solar Solutions at Lighthouse Energy
-        </h1>
-      </div>
-      <div>
-        <p className="font-light text-base text-center">
-          At Lighthouse Energy, we provide affordable, high-quality rooftop
-          solar systems tailored for businesses, reducing electricity costs,
-          enhancing energy independence, and supporting sustainable operations.
-          Our competitive pricing, premium panels, exceptional service, and fast
-          installations deliver reliable power solutions that drive long-term
-          savings and efficiency.
-        </p>
+      <div className="flex flex-col lg:flex-row items-center gap-10 md:gap-16 max-w-7xl mx-auto px-4 py-12">
+        {/* Left Side: Image */}
+        <div className="w-full lg:w-1/2">
+          <div className="rounded-3xl overflow-hidden shadow-xl border border-gray-100">
+            <img
+              src="/commercial.png"
+              alt="Commercial Solar Solutions"
+              className="w-full h-auto object-cover"
+            />
+          </div>
+        </div>
+
+        {/* Right Side: Text */}
+        <div className="w-full lg:w-1/2 text-center lg:text-left space-y-6">
+          <div>
+            <h1 className="font-extrabold text-2xl md:text-4xl">
+              Commercial Solar Solutions at Lighthouse Energy
+            </h1>
+          </div>
+          <div>
+            <p className="font-light text-base md:text-lg text-gray-600">
+              At Lighthouse Energy, we provide affordable, high-quality rooftop
+              solar systems tailored for businesses, reducing electricity costs,
+              enhancing energy independence, and supporting sustainable
+              operations. Our competitive pricing, premium panels, exceptional
+              service, and fast installations deliver reliable power solutions
+              that drive long-term savings and efficiency.
+            </p>
+          </div>
+        </div>
       </div>
       <div className="flex flex-col sm:flex-row justify-between gap-3 items-center mb-16">
         <h1 className="font-extrabold sm:text-4xl text-xl  ">
@@ -742,18 +774,33 @@ const Products = () => {
 
   const renderHousingSociety = () => (
     <section className="space-y-6">
-      <div>
-        <h1 className="font-extrabold text-2xl text-center">
-          Housing Society Solar Solutions at Lighthouse Energy
-        </h1>
-      </div>
+      <div className="flex flex-col lg:flex-row items-center gap-10 md:gap-16 max-w-7xl mx-auto px-4 py-12">
+        {/* Left Side: Image */}
+        <div className="w-full lg:w-1/2">
+          <div className="rounded-3xl overflow-hidden shadow-xl border border-gray-100">
+            <img
+              src="/housing.png"
+              alt="Housing Society Solar Solutions"
+              className="w-full h-auto object-cover"
+            />
+          </div>
+        </div>
 
-      <div>
-        <p className="font-light text-base text-center">
-          At Lighthouse Energy, we deliver reliable, high-quality rooftop solar
-          systems customized for housing societies, ensuring shared savings,
-          energy efficiency, and a sustainable community future
-        </p>
+        {/* Right Side: Text */}
+        <div className="w-full lg:w-1/2 text-center lg:text-left space-y-6">
+          <div>
+            <h1 className="font-extrabold text-2xl md:text-4xl">
+              Housing Society Solar Solutions at Lighthouse Energy
+            </h1>
+          </div>
+          <div>
+            <p className="font-light text-base md:text-lg text-gray-600">
+              At Lighthouse Energy, we deliver reliable, high-quality rooftop
+              solar systems customized for housing societies, ensuring shared
+              savings, energy efficiency, and a sustainable community future.
+            </p>
+          </div>
+        </div>
       </div>
       <div className="flex flex-col sm:flex-row justify-between gap-3 items-center mb-16">
         <h1 className="font-extrabold sm:text-4xl text-xl  ">
