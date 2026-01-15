@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <div className="w-full bg-white px-4 py-8 ml-10 md:py-12">
+    <div className="w-full bg-white px-4 py-8 md:py-12">
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-6">
@@ -22,13 +22,6 @@ const Footer = () => {
                     width={200}
                     height={70}
                   />
-                  {/* <img
-                    className="ml-2"
-                    // src="/StreamCalendar.svg"
-                    alt="streamcalendar"
-                    width={153}
-                    height={30}
-                  /> */}
                 </div>
               </Link>
             </div>
@@ -36,19 +29,19 @@ const Footer = () => {
             {/* Social Links */}
             <div className="flex flex-row gap-3 items-center mt-6">
               <a
-                href="/"
+                href="mailto:info@lighthouseenergy.in"
                 className="hover:opacity-75 transition-opacity hover:pointer"
               >
                 <MailIcon />
               </a>
               <a
-                href="https://www.youtube.com/@LightHouseEnergy"
+                href="https://www.facebook.com/people/Run-on-solar/61586434318238/"
                 className="hover:opacity-75 transition-opacity hover:pointer"
               >
                 <IconBrandFacebook />
               </a>
               <a
-                href="https://www.youtube.com/@LightHouseEnergy"
+                href="https://www.instagram.com/lighthouse__energy/"
                 className="hover:opacity-75 transition-opacity hover:pointer"
               >
                 <IconBrandInstagram />
@@ -157,7 +150,7 @@ const Footer = () => {
               </Link>
             </div>
             <div className="font-medium text-base text-slate-500  ">
-              Contant no. - 91+ 77609 79389
+              Contant no. - 91+ 9243663747
             </div>
           </div>
         </div>
