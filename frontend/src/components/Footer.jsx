@@ -1,5 +1,5 @@
 import { IconBrandFacebook, IconBrandInstagram, IconBrandInstagramFilled, IconBrandWhatsapp } from "@tabler/icons-react";
-import { BuildingIcon, CalculatorIcon, FactoryIcon, HouseIcon, MailIcon, YoutubeIcon } from "lucide-react";
+import { BuildingIcon, CalculatorIcon, FactoryIcon, HouseIcon, MailIcon, YoutubeIcon, LampFloor } from "lucide-react";
 import React from "react";
 
 import { Link } from "react-router-dom";
@@ -97,6 +97,19 @@ const Footer = () => {
                 </span>
                 Solar Calculator
               </Link>
+              <Link
+                to="/products"
+                className="flex items-center gap-2 font-medium text-base text-slate-500 hover:text-blue-600 transition-colors"
+                onClick={() => {
+                  window.scrollTo(0, 0);
+                  // Optionally pass state if your products page handles it to default to street lights
+                }}
+              >
+                <span>
+                  <LampFloor />
+                </span>
+                Solar Street Lights
+              </Link>
             </div>
           </div>
 
@@ -107,19 +120,19 @@ const Footer = () => {
             </h3>
             <div className="space-y-3">
               <Link
-                href="#"
+                to="/aboutus"
                 className="block font-medium text-base text-slate-500 hover:text-blue-600 transition-colors"
               >
                 About
               </Link>
               <Link
-                href="#"
+                to="/privacy"
                 className="block font-medium text-base text-slate-500 hover:text-blue-600 transition-colors"
               >
                 Privacy Policy
               </Link>
               <Link
-                href="#"
+                to="/terms"
                 className="block font-medium text-base text-slate-500 hover:text-blue-600 transition-colors"
               >
                 Terms of Service
@@ -139,15 +152,17 @@ const Footer = () => {
               10’C ,Sagar High Street, Ayodhya Bypass,Bhopal (M.P)- 462041
             </div>
             <div>
-              <Link
-                href="#"
+              <a
+                href="https://wa.me/message/G4PLTDKXGMWRA1"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center gap-2 font-medium text-base text-slate-500 hover:text-blue-600 transition-colors"
               >
                 <span>
                   <IconBrandWhatsapp />
                 </span>
                 WhatsApp Support
-              </Link>
+              </a>
             </div>
             <div className="font-medium text-base text-slate-500  ">
               Contant no. - 91+ 9243663747
@@ -160,7 +175,8 @@ const Footer = () => {
       <div className="border-t border-gray-200 mt-8 pt-6">
         <p className="text-center text-sm text-gray-500">
           &copy; {new Date().getFullYear()} LightHouse Energy Developers. All
-          rights reserved.
+          rights reserved. {" | "}
+          Powered by <a href="https://builtloop.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors">builtloop</a>
         </p>
       </div>
     </div>

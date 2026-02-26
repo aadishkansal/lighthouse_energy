@@ -29,6 +29,8 @@ export function AwardsSection() {
                   src={award.src}
                   alt={award.title}
                   className="w-full h-full object-contain p-2"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
 

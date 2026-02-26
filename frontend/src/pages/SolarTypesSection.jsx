@@ -50,7 +50,7 @@ function SolarCard({
         <img
           src={image}
           alt={title}
-          className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async"
         />
         <div className="absolute top-4 right-4 bg-white/90 dark:bg-black/80 backdrop-blur-md p-2 rounded-full shadow-sm text-yellow-600">
           {icon}

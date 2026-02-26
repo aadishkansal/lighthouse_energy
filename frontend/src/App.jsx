@@ -15,6 +15,8 @@ import ConsultationForm from "./pages/ConsultationForm";
 import { YoutubeCard } from "./components/YoutubeCard";
 import { AwardsSection } from "./components/AwardsSection";
 import { SolarTypesSection } from "./pages/SolarTypesSection";
+import TermsOfService from "./pages/TermsOfService";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 // Home component with your sections
 function Home() {
@@ -22,10 +24,10 @@ function Home() {
     <>
       <Hero />
       <FeaturesSection />
-      <Location/>
+      <Location />
       <Testimonial />
-      <AwardsSection/>
-      <YoutubeCard/>
+      <AwardsSection />
+      {/* <YoutubeCard /> */}
       <FAQs />
 
     </>
@@ -44,6 +46,8 @@ function App() {
         <Route path="/aboutus" element={<Aboutus />} />
         <Route path="/consultationForm" element={<ConsultationForm />} />
         <Route path="/typesofconnections" element={<SolarTypesSection />} />
+        <Route path="/terms" element={<TermsOfService />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="*" element={<div>404 - Page Not Found</div>} />
       </Routes>
 

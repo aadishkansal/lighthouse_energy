@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-// import helmet from "helmet"; // Re-enable in production
+import helmet from "helmet";
 import dotenv from "dotenv";
 import connectDB from "./config/database.js";
 import { z, ZodError } from "zod";
@@ -9,8 +9,10 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Connect to MongoDB
-connectDB();
+// Initialize Supabase Client
+const supabase = connectDB();
+
+app.use(helmet());
 
 // ----------------------------------------------------------------------
 // CORS CONFIGURATION (FIXED)
@@ -37,7 +39,6 @@ app.use(
       if (origin.includes(".vercel.app")) return callback(null, true);
 
       // Block everything else
-      console.log("Blocked by CORS:", origin);
       return callback(new Error("Not allowed by CORS"), false);
     },
     credentials: true,
@@ -65,14 +66,12 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 // Global logging middleware
 app.use((req, res, next) => {
-  console.log(`--> ${req.method} ${req.originalUrl} hit global middleware`);
   next();
 });
 
 // Development logger
 if (process.env.NODE_ENV === "development") {
   app.use((req, res, next) => {
-    console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
     next();
   });
 }
@@ -80,25 +79,20 @@ if (process.env.NODE_ENV === "development") {
 // ----------------------------------------------------------------------
 // DYNAMIC ROUTE LOADING
 // ----------------------------------------------------------------------
-console.log("📁 Loading route files...");
 
 let solarCalculatorRoutes;
 let consultationFormRoutes;
 
 try {
-  console.log("  Loading solar calculator routes...");
   solarCalculatorRoutes = (await import("./routes/solarCalculator.js")).default;
-  console.log("  ✅ Solar calculator routes loaded successfully");
 } catch (error) {
   console.error("  ❌ Error loading solar calculator routes:", error.message);
   console.error("     Full error:", error);
 }
 
 try {
-  console.log("  Loading consultation form routes...");
   consultationFormRoutes = (await import("./routes/consultationForm.js"))
     .default;
-  console.log("  ✅ Consultation form routes loaded successfully");
 } catch (error) {
   console.error("  ❌ Error loading consultation form routes:", error.message);
   console.error("     Full error:", error);
@@ -108,7 +102,6 @@ try {
 if (solarCalculatorRoutes) {
   try {
     app.use("/api/solar-calculator", solarCalculatorRoutes);
-    console.log("✅ Solar calculator routes registered");
   } catch (error) {
     console.error(
       "❌ Error registering solar calculator routes:",
@@ -120,7 +113,6 @@ if (solarCalculatorRoutes) {
 if (consultationFormRoutes) {
   try {
     app.use("/api/consultation", consultationFormRoutes);
-    console.log("✅ Consultation form routes registered");
   } catch (error) {
     console.error(
       "❌ Error registering consultation form routes:",
@@ -144,7 +136,6 @@ app.get("/", (req, res) => {
 
 // Health check
 app.get("/api/health", (req, res) => {
-  console.log("🏥 Health check endpoint hit");
   res.json({
     success: true,
     message: "Lighthouse Energy API is running",
@@ -243,17 +234,11 @@ app.use((req, res) => {
 
 // Start server
 const server = app.listen(PORT, "0.0.0.0", () => {
-  console.log(`🚀 Lighthouse Energy API running on port ${PORT}`);
-  console.log(`📖 Environment: ${process.env.NODE_ENV || "development"}`);
-  console.log(`🏥 Health check: http://localhost:${PORT}/api/health`);
-  console.log(`📚 API docs:    http://localhost:${PORT}/api/docs`);
 });
 
 // Graceful shutdown
 process.on("SIGTERM", () => {
-  console.log("SIGTERM received: closing HTTP server");
   server.close(() => {
-    console.log("HTTP server closed");
   });
 });
 

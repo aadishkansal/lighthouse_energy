@@ -2,12 +2,10 @@
 import { z, ZodError } from "zod";
 
 export const validateSchema = (schema) => {
-  console.log("Middleware check start");                                                       
     return (req, res, next) => {
     try {
       // Validate request body
       const validatedData = schema.parse(req.body);
-      console.log("Validated ", validatedData);
       req.body = validatedData; // Replace with validated data
       next();
     } catch (error) {

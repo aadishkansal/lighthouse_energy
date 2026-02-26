@@ -12,6 +12,8 @@ const Location = () => {
           src="/mp.svg"
           alt="Service Locations"
           className="flex w-2xl lg:w-3xl"
+          loading="lazy"
+          decoding="async"
         />
         <div className="text-black font-bold text-lg text-center">
           Available in multiple locations across

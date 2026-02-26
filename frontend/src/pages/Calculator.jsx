@@ -4,7 +4,8 @@ import {
   Calendar,
   CalendarCheck,
   CalendarRange,
-  Loader2, // Imported Loader Icon
+  Loader2,
+  Zap,
 } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
 
@@ -15,6 +16,7 @@ export default function Calculator({ calculationId }) {
   const [formData, setFormData] = useState({
     state: "",
     monthlyBill: "",
+    averageUnits: "",
     rooftopArea: "",
     mobileNumber: "",
     propertyType: "",
@@ -36,6 +38,9 @@ export default function Calculator({ calculationId }) {
   useEffect(() => {
     if (!calculationIdState) return;
 
+    // Prevent overwriting the comprehensive POST response with a partial GET response
+    if (calculation && calculation.calculationId === calculationIdState) return;
+
     async function loadCalculation() {
       try {
         const res = await fetch(
@@ -54,7 +59,7 @@ export default function Calculator({ calculationId }) {
       }
     }
     loadCalculation();
-  }, [calculationIdState]);
+  }, [calculationIdState, calculation]);
 
   useEffect(() => {
     if (calculation && resultsRef.current) {
@@ -162,14 +167,22 @@ export default function Calculator({ calculationId }) {
           {error}
         </p>
       )}
-      <div className="relative flex flex-col w-screen h-screen justify-center items-center bg-[url(/calsolar.png)] bg-cover bg-center">
-        <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(0,0,0,0)_50%,rgba(0,0,0,0.6)_100%)] pointer-events-none"></div>
-        <h1 className="font-black text-white text-3xl shadow-2xl mb-8 mt-10">
+      <div className="relative flex flex-col w-[100dvw] min-h-[100dvh] pt-32 pb-16 justify-start items-center overflow-x-hidden">
+        {/* Replaced bg-url with an eager image tag for faster loading */}
+        <img
+          src="/calsolar.png"
+          alt="Calculator Background"
+          className="absolute inset-0 w-full h-full object-cover z-[-2]"
+          fetchpriority="high"
+          loading="eager"
+        />
+        <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(0,0,0,0)_50%,rgba(0,0,0,0.6)_100%)] z-[-1] pointer-events-none"></div>
+        <h1 className="relative font-black text-white text-3xl shadow-2xl mb-8">
           Calculate Your Savings
         </h1>
         <form
           onSubmit={handleSubmit}
-          className="flex-col bg-white/10 backdrop-blur-sm text-white shadow-2xl rounded-3xl p-4 py-4"
+          className="relative flex-col bg-white/10 backdrop-blur-sm text-white shadow-2xl rounded-3xl p-4 py-4 w-11/12 max-w-md mx-auto"
         >
           <div className="flex p-1 py-1 justify-start items-center">
             <div>
@@ -193,7 +206,7 @@ export default function Calculator({ calculationId }) {
             </div>
           </div>
           <div className="flex p-2 justify-start items-center">
-            <div>
+            <div className="w-full">
               <label className="block mb-1">
                 Enter Avg Monthly Bill<span className="text-red-400">*</span>
               </label>
@@ -205,6 +218,21 @@ export default function Calculator({ calculationId }) {
                 value={formData.monthlyBill}
                 onChange={handleInputChange}
                 required
+              />
+            </div>
+          </div>
+          <div className="flex p-2 justify-start items-center">
+            <div className="w-full">
+              <label className="block mb-1 text-sm sm:text-base">
+                Average Monthly Electricity Consumption (Units)
+              </label>
+              <input
+                type="number"
+                name="averageUnits"
+                placeholder="Optional: exact units instead of bill estimation"
+                className="outline-gray-500 border border-gray-100 rounded-lg p-1 px-2 text-center bg-transparent w-full"
+                value={formData.averageUnits}
+                onChange={handleInputChange}
               />
             </div>
           </div>
@@ -275,11 +303,10 @@ export default function Calculator({ calculationId }) {
             <button
               type="submit"
               disabled={isLoading} // Disable while loading
-              className={`flex items-center gap-2 p-1 px-12 rounded-full font-semibold transition text-white ${
-                isLoading
-                  ? "bg-gray-500 cursor-not-allowed opacity-70"
-                  : "bg-black hover:bg-white hover:text-black"
-              }`}
+              className={`flex items-center gap-2 p-1 px-12 rounded-full font-semibold transition text-white ${isLoading
+                ? "bg-gray-500 cursor-not-allowed opacity-70"
+                : "bg-black hover:bg-white hover:text-black"
+                }`}
             >
               {isLoading ? (
                 <>
@@ -298,15 +325,20 @@ export default function Calculator({ calculationId }) {
           <h1 className="text-center mb-4 font-bold text-2xl">
             Calculated Savings
           </h1>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 bg-slate-200 mr-4 ml-4 p-4 rounded-lg">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 bg-slate-200 mr-4 ml-4 p-4 rounded-lg">
             <div className="flex bg-white shadow-2xl items-center p-4 rounded-lg gap-2 ">
               <IconSolarPanel />
               Estimated System Size :{" "}
               {calculation.calculatedSavings?.estimatedSystemSize ?? "N/A"} kW
             </div>
             <div className="flex bg-white shadow-2xl items-center p-4 rounded-lg gap-2 ">
+              <Zap />
+              Electricity Generation :{" "}
+              {calculation.calculatedSavings?.averageGeneration ?? "N/A"} kWh/month
+            </div>
+            <div className="flex bg-white shadow-2xl items-center p-4 rounded-lg gap-2 ">
               <BadgeIndianRupee />
-              Estimated Cost : ₹{" "}
+              *Estimated Cost : ₹{" "}
               {calculation.calculatedSavings?.estimatedCost ?? "N/A"}
             </div>
             <div className="flex bg-white shadow-2xl items-center p-4 rounded-lg gap-2 ">
@@ -329,6 +361,16 @@ export default function Calculator({ calculationId }) {
               Subsidy Amount : ₹{" "}
               {calculation.calculatedSavings?.subsidyAmount ?? "N/A"}
             </div>
+            <div className="flex bg-white shadow-2xl items-center p-4 rounded-lg gap-2 font-bold  ">
+              <BadgeIndianRupee />
+              * Approx Price : ₹{" "}
+              {calculation.calculatedSavings?.estimatedCost !== undefined && calculation.calculatedSavings?.subsidyAmount !== undefined
+                ? (calculation.calculatedSavings.estimatedCost - calculation.calculatedSavings.subsidyAmount).toLocaleString()
+                : "N/A"}
+            </div>
+          </div>
+          <div className="text-center mt-6 text-sm text-gray-500 max-w-2xl mx-auto italic pb-8">
+            <p>* These are the estimated price for the DCR (Domestic Content Requirement) solar panels. The NON DCR (Domestic Content Requirement) solar panels does not get the subsidy.</p>
           </div>
         </div>
       )}

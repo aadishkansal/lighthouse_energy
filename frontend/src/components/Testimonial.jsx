@@ -23,31 +23,32 @@ export function Testimonial() {
 const testimonials = [
   {
     quote:
-      "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope, it was the winter of despair.",
-    name: "Charles Dickens",
-    title: "A Tale of Two Cities",
+      "Lighthouse Energy EPC ne hamare ghar me 3kW ka solar system install kiya. Installation bilkul smooth tha aur team ka behavior professional tha. Ab bijli ka bill almost zero ho gaya hai. Bahut hi acchi service!",
+    name: "Rohit Sharma",
+    title: "Bhopal",
   },
   {
     quote:
-      "To be, or not to be, that is the question: Whether 'tis nobler in the mind to suffer The slings and arrows of outrageous fortune, Or to take Arms against a Sea of troubles, And by opposing end them: to die, to sleep.",
-    name: "William Shakespeare",
-    title: "Hamlet",
-  },
-  {
-    quote: "All that we see or seem is but a dream within a dream.",
-    name: "Edgar Allan Poe",
-    title: "A Dream Within a Dream",
+      "Main Guna se hoon aur solar ko leke pehle doubt tha. Lekin unhone proper guidance di aur subsidy process bhi handle kiya. Ab daily 12-14 units generation ho rahi hai. Fully satisfied!",
+    name: "Anjali Verma",
+    title: "Guna",
   },
   {
     quote:
-      "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.",
-    name: "Jane Austen",
-    title: "Pride and Prejudice",
+      "Raisen me farmhouse ke liye 5kW system lagwaya. Quality of panels aur structure dono strong hain. Installation time pe complete hua aur after-sales support bhi fast hai.",
+    name: "Deepak Jain",
+    title: "Raisen",
   },
   {
     quote:
-      "Call me Ishmael. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world.",
-    name: "Herman Melville",
-    title: "Moby-Dick",
+      "Ashoknagar me apni shop ke liye solar install karwaya. Team ne load analysis karke perfect solution diya. Electricity expense kaafi kam ho gaya hai. Paisa vasool investment.",
+    name: "Sakshi Gupta",
+    title: "Ashoknagar",
+  },
+  {
+    quote:
+      "Indore me 2kW rooftop solar system lagwaya. Documentation, net metering aur subsidy sab smoothly ho gaya. Team responsive hai aur kaam clean finish ke saath kiya.",
+    name: "Amit Tiwari",
+    title: "Indore",
   },
 ];

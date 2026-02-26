@@ -58,6 +58,13 @@ export const solarCalculatorSchema = z.object({
       .min(100, "Monthly bill must be at least ₹100")
       .max(100000, "Monthly bill cannot exceed ₹100,000")
   ),
+  averageUnits: z.preprocess(
+    (val) => {
+      if (val === undefined || val === null || val === "") return undefined;
+      return typeof val === "string" || typeof val === "number" ? Number(val) : val;
+    },
+    z.number().positive("Average units must be a positive number").optional()
+  ),
   rooftopArea: z.preprocess(
     (val) =>
       typeof val === "string" || typeof val === "number" ? Number(val) : val,
@@ -125,11 +132,6 @@ export const housingSchema = baseConsultationSchema.extend({
     "Builder",
     "Facility Manager",
   ]),
-  agmApproval: z.enum([
-    "We already have AGM approval",
-    "We don't have an AGM approval yet",
-    "We want help in preparing for our AGM", 
-  ]),
 });
 
 export const commercialSchema = baseConsultationSchema.extend({
@@ -140,11 +142,21 @@ export const commercialSchema = baseConsultationSchema.extend({
     .max(100, "Company name cannot exceed 100 characters"),
 });
 
+export const streetLightsSchema = baseConsultationSchema.omit({ monthlyBill: true }).extend({
+  formType: z.literal("streetLights"),
+  organizationName: z
+    .string()
+    .min(2, "Organization/Project name must be at least 2 characters")
+    .max(100, "Organization name cannot exceed 100 characters"),
+  capacityRequired: z.string().min(1, "Capacity required must be provided"),
+});
+
 // Discriminated union with explicit unique discriminator values
 export const consultationSchema = z.discriminatedUnion("formType", [
   residentialSchema,
   housingSchema,
   commercialSchema,
+  streetLightsSchema,
 ]);
 
 // Lead status update schema
@@ -161,7 +173,7 @@ export const leadStatusUpdateSchema = z.object({
 export const paginationSchema = z.object({
   page: z.string().transform((val) => parseInt(val) || 1),
   limit: z.string().transform((val) => Math.min(parseInt(val) || 10, 100)),
-  formType: z.enum(["residential", "housing", "commercial"]).optional(),
+  formType: z.enum(["residential", "housing", "commercial", "streetLights"]).optional(),
   // Using same "housing" key as discriminator
   leadStatus: z.enum(["new", "contacted", "qualified", "converted"]).optional(),
 });

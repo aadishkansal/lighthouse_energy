@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-const navigate = useNavigate();
+  const navigate = useNavigate();
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev);
   };
@@ -48,23 +48,31 @@ const navigate = useNavigate();
             );
           })}
         </ul>
-        <button
-          onClick={() => navigate("/consultationForm")}
-          className="relative inline-flex h-10 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
-        >
-          <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-          <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
-            <ArrowUpRight className="w-4 h-4 mr-1" /> Go Solar
-          </span>
-        </button>
+        <div className="flex gap-4 items-center">
+          <a
+            href="https://sales.lighthouseenergy.in/login"
+            className="flex items-center text-black bg-white rounded-full font-medium px-4 py-1.5 border border-black hover:bg-black hover:text-white transition-colors"
+          >
+            Login
+          </a>
+          <button
+            onClick={() => navigate("/consultationForm")}
+            className="relative inline-flex h-10 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
+          >
+            <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
+            <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
+              <ArrowUpRight className="w-4 h-4 mr-1" /> Go Solar
+            </span>
+          </button>
+        </div>
       </div>
 
       {/* Mobile device navbar */}
       <div className="lg:hidden fixed top-3 z-50 w-full flex justify-center">
         <div className="w-[360px] sm:w-[620px] flex justify-between items-center p-2 bg-white/10 backdrop-blur-sm rounded-full">
           <div className="ml-4">
-            
-            <img src="/lhelogo.png" alt="logo" width={140}/>
+
+            <img src="/lhelogo.png" alt="logo" width={140} />
           </div>
           <button
             onClick={toggleMobileMenu}
@@ -72,7 +80,7 @@ const navigate = useNavigate();
             aria-label="Toggle menu"
           >
             <LucideMenu className="w-7 h-7 text-blue-800" />
-            
+
           </button>
         </div>
 
@@ -117,7 +125,13 @@ const navigate = useNavigate();
               </div>
 
               {/* Mobile CTA button */}
-              <div className="px-6 py-4 mt-8">
+              <div className="px-6 py-4 mt-8 space-y-4">
+                <a
+                  href="https://sales.lighthouseenergy.in/login"
+                  className="w-full flex justify-center px-6 py-3 rounded-full text-lg font-medium bg-white text-black border border-black hover:bg-gray-100 transition-all"
+                >
+                  Login
+                </a>
                 <button
                   onClick={() => {
                     closeMobileMenu();

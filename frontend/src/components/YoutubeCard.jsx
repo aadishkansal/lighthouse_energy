@@ -28,6 +28,8 @@ export function YoutubeCard() {
                   src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`}
                   alt={video.title}
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                  decoding="async"
                 />
 
                 {/* Overlay with Red Play Button */}

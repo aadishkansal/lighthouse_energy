@@ -12,11 +12,12 @@ const Hero = () => {
       {/* Desktop (≥1024px) */}
       {/* 1. Changed w-fit to w-full and added h-screen to force it to be exactly screen height */}
       <div className="hidden lg:flex relative w-full h-screen overflow-hidden">
-       
+
         <img
           src="/solar.png"
           alt="Solar Panel Background"
           className="absolute inset-0 w-full h-full object-cover block"
+          decoding="async"
         />
 
         {/* Text directly over image */}
@@ -26,7 +27,7 @@ const Hero = () => {
         </div>
 
         {/* Desktop form */}
-        <div className="absolute w-[480px] h-auto max-h-[600px] top-0 right-0 mt-28 mr-24 mb-8 rounded-3xl bg-black/20 backdrop-blur-md z-20 p-6 flex-col">
+        <div className="absolute w-[520px] h-auto min-h-[500px] max-h-[calc(100vh-160px)] top-[120px] right-0 mr-24 rounded-3xl bg-black/30 backdrop-blur-xl z-20 flex flex-col p-6 overflow-hidden border border-white/10 shadow-2xl">
           <SolarConsultationForm />
         </div>
       </div>
@@ -39,6 +40,7 @@ const Hero = () => {
             src="/solarmb.png"
             alt="Solar Background"
             className="absolute inset-0 h-full w-full object-cover"
+            decoding="async"
           />
 
           {/* OPTIONAL: Dark Overlay to make text readable if image is bright */}
