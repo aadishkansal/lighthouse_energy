@@ -14,13 +14,6 @@ import {
 
 const router = express.Router();
 
-// Middleware for logging
-router.use((req, res, next) => {
-    `--> Consultation router middleware: ${req.method} ${req.originalUrl}`
-  );
-  next();
-});
-
 // Object ID validation schema
 const objectIdSchema = z.object({
   id: z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid ID format"),
