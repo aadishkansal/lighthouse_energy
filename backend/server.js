@@ -4,6 +4,8 @@ import helmet from "helmet";
 import dotenv from "dotenv";
 import connectDB from "./config/database.js";
 import { z, ZodError } from "zod";
+import solarCalculatorRoutes from "./routes/solarCalculator.js";
+import consultationFormRoutes from "./routes/consultationForm.js";
 
 dotenv.config();
 const app = express();
@@ -77,49 +79,11 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // ----------------------------------------------------------------------
-// DYNAMIC ROUTE LOADING
+// REGISTER ROUTES
 // ----------------------------------------------------------------------
 
-let solarCalculatorRoutes;
-let consultationFormRoutes;
-
-try {
-  solarCalculatorRoutes = (await import("./routes/solarCalculator.js")).default;
-} catch (error) {
-  console.error("  ❌ Error loading solar calculator routes:", error.message);
-  console.error("     Full error:", error);
-}
-
-try {
-  consultationFormRoutes = (await import("./routes/consultationForm.js"))
-    .default;
-} catch (error) {
-  console.error("  ❌ Error loading consultation form routes:", error.message);
-  console.error("     Full error:", error);
-}
-
-// Register Routes
-if (solarCalculatorRoutes) {
-  try {
-    app.use("/api/solar-calculator", solarCalculatorRoutes);
-  } catch (error) {
-    console.error(
-      "❌ Error registering solar calculator routes:",
-      error.message
-    );
-  }
-}
-
-if (consultationFormRoutes) {
-  try {
-    app.use("/api/consultation", consultationFormRoutes);
-  } catch (error) {
-    console.error(
-      "❌ Error registering consultation form routes:",
-      error.message
-    );
-  }
-}
+app.use("/api/solar-calculator", solarCalculatorRoutes);
+app.use("/api/consultation", consultationFormRoutes);
 
 // ----------------------------------------------------------------------
 // BASIC ROUTES
