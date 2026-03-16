@@ -109,6 +109,35 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+// Keep-alive cron job
+app.get("/api/cron/keep-alive", async (req, res) => {
+  try {
+    // A simple query to keep the Supabase database active and prevent it from pausing
+    const { data, error } = await supabase
+      .from("solar_calculators")
+      .select("id")
+      .limit(1);
+
+    if (error) {
+      console.error("Keep-alive query error:", error);
+      throw error;
+    }
+
+    res.json({
+      success: true,
+      message: "Supabase keep-alive successful",
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error("Keep-alive error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Keep-alive failed",
+      error: error.message,
+    });
+  }
+});
+
 // API docs
 app.get("/api/docs", (req, res) => {
   res.json({
