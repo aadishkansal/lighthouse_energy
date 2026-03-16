@@ -133,7 +133,9 @@ app.get("/api/cron/keep-alive", async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Keep-alive failed",
-      error: error.message,
+      ...(process.env.NODE_ENV !== "production"
+        ? { error: error.message }
+        : {}),
     });
   }
 });
